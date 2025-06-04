@@ -53,11 +53,13 @@ export function pause(){
 export function evaluation(){
 	if(experiment==null) return;
 
-	experiment.evalExpr("create people number:100;", onReceiveMsg);
-	experiment.evalExpr("length(people)", onReceiveMsg);
-	experiment.evalExpr("cycle", onReceiveMsg);
-
+	//experiment.evalExpr("people collect (each.location)", onReceiveMsg);
+	experiment.evalExpr("people as_map ( int(each) :: each.location)", onReceiveMsg);
+	// experiment.evalExpr("create people number:100;", onReceiveMsg);
+	// experiment.evalExpr("length(people)", onReceiveMsg);
+	// experiment.evalExpr("cycle", onReceiveMsg);
 }
+
 export function reload(){
 	if(experiment==null) return;
 	
