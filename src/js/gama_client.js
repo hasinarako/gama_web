@@ -1,6 +1,5 @@
 import GAMA from "./../dev/GAMA";
-mapboxgl.accessToken = 'pk.eyJ1IjoiYWdyaWduYXJkIiwiYSI6ImNqdWZ6ZjJ5MDBoenczeXBkYWU3bTk5ajYifQ.SXiCzAGs4wbMlw3RHRvxhw';
-
+API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
 
 var updateSource;
 var updateSource2;
@@ -14,11 +13,9 @@ var staticLayerCalled = Boolean(false);
 
 //GAMA PATH
 
-// var ABSOLUTE_PATH_TO_GAMA = '/Users/hqn88/git/';
-var ABSOLUTE_PATH_TO_GAMA = "C:\Users\rhmha\Downloads\stage\GAMA"
+var ABSOLUTE_PATH_TO_GAMA = "C:\Users\rhmha\Downloads\stage\GAMA"   //à fixer
+var modelPath = 'C:\Users\rhmha\Downloads\stage\GAMA\headless\samples\roadTraffic\models\model7.gaml';  // à fixer
 
-var modelPath = 'C:\Users\rhmha\Downloads\stage\GAMA\headless\samples\roadTraffic\models\model7.gaml';
-//var modelPath = '/Users/arno/Projects/GitHub/I-Maroc/IMaroc_GAMA/models/Population_Mobility_DataViz.gaml';
 var experimentName = 'roadTraffic';
 var species1Name = 'people';
 var attribute1Name = 'color';
@@ -27,19 +24,6 @@ var attribute2Name = 'type';  //il y a 2 type de building Residential en gris et
 var species3Name = 'road';
 var attribute3Name = 'color';
 
-
-/*const modelPath = '/Users/arno/Projects/GitHub/UD_ReAgent_ABM/ReAgent/models/Gratte_Ciel_Demo.gaml';
-const experimentName = 'Demo';
-const species1Name = 'people';
-const attribute1Name = 'type';
-const species2Name = 'building';
-const attribute2Name = 'type';*/
-
-// var modelPath = 'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Lockdown\\LockDown.gaml';
-// var modelPath = 'C:\\git\\PROJECT\\COMOKIT-Model\\COMOKIT\\Meso\\Models\\Experiments\\Activity Restrictions\\School and Workplace Closure.gaml';
-// var experimentName = 'Closures';
-// var species1Name = 'Individual';
-// var attribute1Name = 'state';
 
 const experiment = new GAMA("ws://localhost:3000/", modelPath, experimentName);
 experiment.connect(on_connected, on_disconnected);
@@ -116,16 +100,20 @@ function start_renderer() {
 		}, true);
 	}, 1);
 }
+
+
+//programme principal
+
+//création de l'objet map avec la libraire mapbox
 const map = new mapboxgl.Map({
 	container: 'map', // container id
-	style: 'mapbox://styles/mapbox/satellite-v9',
+	style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
 	//style: 'mapbox://styles/mapbox/light-v9',
-	pitch: 45,
-	bearing: -17.6,
-	antialias: true,
-	center: [-7.991405559068491,31.62418156481035], // TLU -84.5, 38.05starting position 
-	zoom: 13 // starting zoom
+	center: [6.08,45.09],  
+	zoom: 15 // starting zoom
 });
+
+
 
 var geojson = {
 	'type': 'FeatureCollection',
