@@ -21,11 +21,11 @@ var modelPath = 'C:\Users\rhmha\Downloads\stage\GAMA\headless\samples\roadTraffi
 //var modelPath = '/Users/arno/Projects/GitHub/I-Maroc/IMaroc_GAMA/models/Population_Mobility_DataViz.gaml';
 var experimentName = 'roadTraffic';
 var species1Name = 'people';
-var attribute1Name = 'objective';
+var attribute1Name = 'color';
 var species2Name = 'building';
+var attribute2Name = 'type';  //il y a 2 type de building Residential en gris et Industrial en Bleu
 var species3Name = 'road';
-var attribute2Name = 'type';
-var attribute3Name;
+var attribute3Name = 'color';
 
 
 /*const modelPath = '/Users/arno/Projects/GitHub/UD_ReAgent_ABM/ReAgent/models/Gratte_Ciel_Demo.gaml';
