@@ -12,7 +12,7 @@ export function connect(){
 	
 	const host= "localhost";
 	const port= 1000;
-	const modelPath='C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7.gaml';
+	const modelPath='C:/Users/rhmha/Downloads/stage/GAMA/headless/samples/roadTraffic/models/model7.gaml';
 	const experimentName = 'road_traffic';
 
 	experiment = new GAMA("ws://"+host+":"+port+"/", modelPath, experimentName);

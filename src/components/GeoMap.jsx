@@ -6,10 +6,10 @@ import './../style/Map.css';
 function Map() {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  // const lng = 6.08;
-  // const lat = 45.09;
-  const lng = 0;
-  const lat = 0;
+  const lng = 6.08;
+  const lat = 45.09;
+  // const lng = 0;
+  // const lat = 0;
   const zoom = 15;
   const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
 
@@ -18,31 +18,31 @@ function Map() {
     if (map.current) return;
 
 
-    // //avec fond de carte
-    // map.current = new maplibregl.Map({
-    //   container: mapContainer.current,
-    //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-    //   center: [lng, lat],
-    //   zoom: zoom
-    // });
-
-    //sans fond de carte
+    //avec fond de carte
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: { 
-        version: 8,
-        sources: {}, 
-        layers: []  
-      },
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
       center: [lng, lat],
       zoom: zoom
     });
+
+    //sans fond de carte
+    // map.current = new maplibregl.Map({
+    //   container: mapContainer.current,
+    //   style: { 
+    //     version: 8,
+    //     sources: {}, 
+    //     layers: []  
+    //   },
+    //   center: [lng, lat],
+    //   zoom: zoom
+    // });
    
     map.current.on('load', () => {
      // ajout de chaque type d'agents après le chargement complet de la carte
-      addGeoJSONLayer('bounds', './../../public/bounds.geojson', 'fill', '#000000', 2);
-      addGeoJSONLayer('roads', './../../public/roads.geojson', 'line', '#969595', 1.5);
-      addGeoJSONLayer('buildings', './../../public/buildings.geojson', 'fill', '#3a3aba', 0.5);
+      addGeoJSONLayer('bounds', 'bounds.geojson', 'fill', '#000000', 2);
+      addGeoJSONLayer('roads', 'roads.geojson', 'line', '#969595', 1.5);
+      addGeoJSONLayer('buildings', 'buildings.geojson', 'fill', '#3a3aba', 0.5);
     });
 
   }, [API_KEY, lng, lat, zoom]);
@@ -60,15 +60,22 @@ function Map() {
     });
 
     //2- représenter les données sur une couche avec son style approprié
+     const paintConfig = {
+      [`${type}-color`]: color,
+      [`${type}-opacity`]: 1
+    };
+
+    if (type === 'fill') {
+      paintConfig['fill-outline-color'] = color; 
+    } else if (type === 'line') {
+      paintConfig['line-width'] = lineWidth; 
+    }
+
     map.current.addLayer({
       id: id,
       type: type,
       source: id,
-      paint: {
-        [`${type}-color`]: color,
-        [`${type}-width`]: lineWidth,
-        [`${type}-opacity`]: 0.8
-      }
+      paint: paintConfig
     });
   };
 

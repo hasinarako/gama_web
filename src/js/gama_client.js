@@ -1,3 +1,4 @@
+import GAMA from "./../dev/GAMA";
 mapboxgl.accessToken = 'pk.eyJ1IjoiYWdyaWduYXJkIiwiYSI6ImNqdWZ6ZjJ5MDBoenczeXBkYWU3bTk5ajYifQ.SXiCzAGs4wbMlw3RHRvxhw';
 
 
@@ -9,20 +10,22 @@ var staticLayerCalled = Boolean(false);
 
 //VISUALIZATION
 //Get the 3D building layer from MapBox
-var show3DBuilding = Boolean(false);
+//var show3DBuilding = Boolean(false);
 
 //GAMA PATH
 
 // var ABSOLUTE_PATH_TO_GAMA = '/Users/hqn88/git/';
-var ABSOLUTE_PATH_TO_GAMA = '"C:\Users\rhmha\Downloads\GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca.exe"'
+var ABSOLUTE_PATH_TO_GAMA = "C:\Users\rhmha\Downloads\stage\GAMA"
 
-var modelPath = 'C:\Users\rhmha\Downloads\GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca\configuration\org.eclipse.osgi\29\0\.cp\models\Tutorials\Predator Prey\models\Model 01.gaml';
+var modelPath = 'C:\Users\rhmha\Downloads\stage\GAMA\headless\samples\roadTraffic\models\model7.gaml';
 //var modelPath = '/Users/arno/Projects/GitHub/I-Maroc/IMaroc_GAMA/models/Population_Mobility_DataViz.gaml';
-var experimentName = 'demo';
-var species1Name = 'prey';
+var experimentName = 'roadTraffic';
+var species1Name = 'people';
 var attribute1Name = 'objective';
-var species2Name = 'predator';
+var species2Name = 'building';
+var species3Name = 'road';
 var attribute2Name = 'type';
+var attribute3Name;
 
 
 /*const modelPath = '/Users/arno/Projects/GitHub/UD_ReAgent_ABM/ReAgent/models/Gratte_Ciel_Demo.gaml';
@@ -38,7 +41,7 @@ const attribute2Name = 'type';*/
 // var species1Name = 'Individual';
 // var attribute1Name = 'state';
 
-const experiment = new GAMA("ws://localhost:1000/", modelPath, experimentName);
+const experiment = new GAMA("ws://localhost:3000/", modelPath, experimentName);
 experiment.connect(on_connected, on_disconnected);
 
 function on_connected() {
@@ -171,7 +174,7 @@ map.on('load', async () => {
 
 		},
 	});
-	const layers = map.getStyle().layers;
+	//const layers = map.getStyle().layers;
 	// const labelLayerId = layers.find(
 	// 	(layer) => layer.type === 'symbol' && layer.layout['text-field']
 	// ).id;
@@ -211,29 +214,31 @@ map.on('load', async () => {
 	// 	);
 	// }
 	// Add some fog in the background
-	map.setFog({
-		'range': [-0.5, 5],
-		'color': 'white',
-		'horizon-blend': 0.2
-	});
-	// Add a sky layer over the horizon
-	map.addLayer({
-		'id': 'sky',
-		'type': 'sky',
-		'paint': {
-			'sky-type': 'atmosphere',
-			'sky-atmosphere-color': 'rgba(85, 151, 210, 0.5)'
-		}
-	});
-	// Add terrain source, with slight exaggeration
-	map.addSource('mapbox-dem', {
-		'type': 'raster-dem',
-		'url': 'mapbox://mapbox.terrain-rgb',
-		'tileSize': 512,
-		'maxzoom': 14
-	});
-	map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.0 });
-	// map.setLight({ anchor: 'map' });
+
+
+	// map.setFog({
+	// 	'range': [-0.5, 5],
+	// 	'color': 'white',
+	// 	'horizon-blend': 0.2
+	// });
+	// // Add a sky layer over the horizon
+	// map.addLayer({
+	// 	'id': 'sky',
+	// 	'type': 'sky',
+	// 	'paint': {
+	// 		'sky-type': 'atmosphere',
+	// 		'sky-atmosphere-color': 'rgba(85, 151, 210, 0.5)'
+	// 	}
+	// });
+	// // Add terrain source, with slight exaggeration
+	// map.addSource('mapbox-dem', {
+	// 	'type': 'raster-dem',
+	// 	'url': 'mapbox://mapbox.terrain-rgb',
+	// 	'tileSize': 512,
+	// 	'maxzoom': 14
+	// });
+	// map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.0 });
+	// // map.setLight({ anchor: 'map' });
 
 	experiment.connect(on_connected, on_disconnected);
 });
