@@ -7,9 +7,11 @@ import data_roads from "./../data/roads.geojson";
 import data_buildings from "./../data/buildings.geojson";
 import data_bounds from "./../data/bounds.geojson";
 
+// les coordonnées doivent changer
 let roads = await fetch(data_roads).then(res => res.json());
 let buildings = await fetch(data_buildings).then(res => res.json());
 let bounds = await fetch(data_bounds).then(res => res.json());
+
 
 //système des coordonnées en entrée
 proj4.defs('EPSG:27572', 
@@ -26,17 +28,27 @@ function convertisseur(array) {
 }
 
 function transformGeoJSON(geojson) {
-  console.log("ici");
-  console.log(geojson.features[0].geometry.coordinates[0]);
-  console.log("ici");
 
+  console.log(geojson.features[0]);
+
+  // const data = JSON.parse(geojson.features[0].geometry);
+  // console.log(data);
+
+  console.log("ancien coordonnée");
+  console.log(geojson.features[0].geometry.coordinates[0]);
+
+  console.log("nouveau coordonnée");
   console.log(convertisseur(geojson.features[0].geometry.coordinates[0]))
   
 }
 
 
 
+
+
+
 function Map() {
+
   const mapContainer = useRef(null);
   const map = useRef(null);
 

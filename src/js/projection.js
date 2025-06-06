@@ -2,7 +2,7 @@ import datajson from "./../data/roads.geojson";
 import proj4 from "proj4";
 
 
-//Ce script sert à traiter les données geojson, il faut convertir les coordonnées dans un système standard longitude-latitude
+//Ce script sert à traiter les données geojson, il faut convertir les coordonnées en coordonnées standard longitude-latitude
 
 
 //système des coordonnées en entrée
