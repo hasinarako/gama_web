@@ -31,10 +31,14 @@ export function load(){
 	]);
 	experiment.setEndCondition("cycle>=15");
     experiment.launch(onReceiveMsg);
+
+
 }
 export function play(){
 	if(experiment==null) return;
-	experiment.play(onReceiveMsg);
+	// experiment.play((onReceiveMsg)=>{start_sim()});
+	experiment.play((onReceiveMsg)=>{start_renderer()});
+	//experiment.play(onReceiveMsg);
 
 }
 
@@ -60,6 +64,49 @@ export function evaluation(){
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
+}
+
+function start_sim() {
+
+	experiment.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
+		console.log(ee);
+		ee = JSON.parse(ee).content.replace(/[{}]/g, "");
+		var eee = ee.split(",");
+		console.log(eee[1]);
+		console.log(eee[2]);
+		// map.flyTo({
+		// 	center: [eee[0]["x"], eee[1]["y"]],
+		// 	essential: true,
+		// 	duration: 0,
+		// 	zoom: 15
+		// });
+		// document.getElementById('div-loader').remove();
+		//request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
+	});
+
+	experiment.play((onReceiveMsg)=>{start_renderer()});
+}
+
+function start_renderer() {
+	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
+		if (typeof message == "object") {
+			console.log("in if");
+			console.log(message);
+		} else {
+			console.log("in else");
+			console.log(message);
+			var gjs = JSON.parse(message);
+			if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
+				// var tmp = gjs.content;
+			//	geojson = null;
+
+			//	geojson = tmp;
+
+				//Map.map.addSource('source2').setData(gjs.content);
+			}
+		}
+	}, true);
+
 }
 
 export function reload(){

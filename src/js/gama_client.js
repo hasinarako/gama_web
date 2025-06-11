@@ -25,7 +25,7 @@ var species3Name = 'road';
 var attribute3Name = 'color';
 
 
-const experiment = new GAMA("ws://localhost:3000/", modelPath, experimentName);
+const experiment = new GAMA("ws://localhost:1000/", modelPath, experimentName);
 experiment.connect(on_connected, on_disconnected);
 
 function on_connected() {
@@ -57,18 +57,18 @@ function start_sim() {
 	experiment.play(()=>{start_renderer()});
 }
 function start_renderer() {
-	experiment.evalExpr("to_geojson(" + species2Name + ",\"EPSG:4326\",[\"" + attribute2Name + "\"])", function (message) {
+	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
 
 		} else {
 			var gjs = JSON.parse(message);
 			if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
 				var tmp = gjs.content;
-				geojson = null;
+			//	geojson = null;
 
-				geojson = tmp;
+			//	geojson = tmp;
 
-				map.getSource('source2').setData(geojson);
+				map.getSource('source2').setData(gjs.content);
 			}
 		}
 	}, true);

@@ -14,7 +14,7 @@ let bounds = await fetch(data_bounds).then(res => res.json());
 
 
 //système des coordonnées en entrée
-proj4.defs('EPSG:27572', 
+proj4.defs('EPSG:2154', 
   '+proj=lcc +lat_1=44 +lat_2=45.5 +lat_0=43 +lon_0=3 +x_0=1700000 +y_0=2200000 +ellps=clrk80 +towgs84=-168,-60,320,0,0,0,0 +pm=paris +units=m +no_defs');
 
 //système des coordonnées en sortie
@@ -24,7 +24,7 @@ proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
 //étape de conversion
 function convertisseur(array) {
   //console.log([x, y]);
-  return proj4('EPSG:27572', 'EPSG:4326', [array[0],array[1]]);
+  return proj4('EPSG:2154', 'EPSG:4326', [array[0],array[1]]);
 }
 
 function transformGeoJSON(geojson) {
@@ -41,7 +41,6 @@ function transformGeoJSON(geojson) {
   console.log(convertisseur(geojson.features[0].geometry.coordinates[0]))
   
 }
-
 
 
 
@@ -65,7 +64,6 @@ function Map() {
   const newroads = transformGeoJSON(roads);
   //console.log(newroads);
 
-  
 
 
 
@@ -75,31 +73,33 @@ function Map() {
 
 
     //avec fond de carte
-    // map.current = new maplibregl.Map({
-    //   container: id.current,
-    //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-    //   center: [lng, lat],
-    //   zoom: zoom
-    // });
-
-    //sans fond de carte
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: { 
-        version: 8,
-        sources: {}, 
-        layers: []  
-      },
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
       center: [lng, lat],
       zoom: zoom
     });
+
+    //sans fond de carte
+    // map.current = new maplibregl.Map({
+    //   container: mapContainer.current,
+    //   style: { 
+    //     version: 8,
+    //     sources: {}, 
+    //     layers: []  
+    //   },
+    //   center: [lng, lat],
+    //   zoom: zoom
+    // });
    
     map.current.on('load', () => {
 
      // ajout de chaque type d'agents après le chargement complet de la carte
-      addGeoJSONLayer('bounds', bounds, 'fill', '#000000', 2);
-      addGeoJSONLayer('roads', roads, 'line', '#969595', 1.5);
-      addGeoJSONLayer('buildings', buildings, 'fill', '#3a3aba', 0.5);
+      addGeoJSONLayer('bounds', {"type":"FeatureCollection", "features":[
+{"type":"Feature","geometry":{"type":"LineString","coordinates":[[-4.239891028675488,
+40.92640826272267],[-4,41]]},"properties":{}}]}, 'fill', '#000000', 2);
+      // addGeoJSONLayer('roads', roads, 'line', '#969595', 1.5);
+      // addGeoJSONLayer('buildings', buildings, 'fill', '#3a3aba', 0.5);
     });
 
   }, [API_KEY, lng, lat, zoom]);
