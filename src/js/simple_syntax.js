@@ -66,46 +66,58 @@ export function evaluation(){
 	// experiment.evalExpr("cycle", onReceiveMsg);
 }
 
-function start_sim() {
 
-	experiment.evalExpr("CRS_transform(world.location,\"EPSG:4326\")", function (ee) {
-		console.log(ee);
-		ee = JSON.parse(ee).content.replace(/[{}]/g, "");
-		var eee = ee.split(",");
-		console.log(eee[1]);
-		console.log(eee[2]);
-		// map.flyTo({
-		// 	center: [eee[0]["x"], eee[1]["y"]],
-		// 	essential: true,
-		// 	duration: 0,
-		// 	zoom: 15
-		// });
-		// document.getElementById('div-loader').remove();
-		//request = "";//IMPORTANT FLAG TO ACCOMPLISH CURRENT TRANSACTION
-	});
-
-	experiment.play((onReceiveMsg)=>{start_renderer()});
-}
 
 function start_renderer() {
+
+	let liste = [];
+
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
-			console.log("in if");
-			console.log(message);
+
 		} else {
-			console.log("in else");
-			console.log(message);
-			var gjs = JSON.parse(message);
-			if (gjs.content && gjs.type === "CommandExecutedSuccessfully") {
-				// var tmp = gjs.content;
-			//	geojson = null;
+			
+			
+			var parsed = JSON.parse(message);
 
-			//	geojson = tmp;
-
-				//Map.map.addSource('source2').setData(gjs.content);
-			}
+			const geojsonString = parsed.content;  // encore encodé et avec des antislash
+			const geojson = JSON.parse(geojsonString);
+			liste.push({"road":geojson});
 		}
 	}, true);
+
+	experiment.evalExpr("to_geojson(" + "building" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
+		if (typeof message == "object") {
+
+		} else {
+			
+			
+			var parsed = JSON.parse(message);
+
+			const geojsonString = parsed.content; 
+			const geojson = JSON.parse(geojsonString);
+			liste.push({"building":geojson});
+
+
+		}
+	}, true);
+
+	experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
+		if (typeof message == "object") {
+
+		} else {
+			
+			
+			var parsed = JSON.parse(message);
+
+			const geojsonString = parsed.content;  
+			const geojson = JSON.parse(geojsonString);
+			liste.push({"people":geojson});
+
+		}
+	}, true);
+
+	return liste;
 
 }
 
