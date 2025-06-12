@@ -1,38 +1,40 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
-import {start_renderer } from "../js/simple_syntax.js";
+import {start_renderer} from "../js/simple_syntax.js";
+import {evalExpr} from "../dev/GAMA.js";
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
 
 
 
 
-
-
 function Map() {
 
-  const mapContainer = useRef(null);
-  const map = useRef(null);
+  const [myList, setMyList] = useState([]);
+
+  // const mapContainer = useRef(null);
+  // const map = useRef(null);
 
 
-  //centre de la ville d'Alpes d'Huez
-  const lng = 6.08;
-  const lat = 45.09;
+  // //centre de la ville d'Alpes d'Huez
+  // const lng = 6.08;
+  // const lat = 45.09;
 
-  // const lng = 0;
-  // const lat = 0;
-  const zoom = 10;
-  const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
+
+  // const zoom = 10;
+  // const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
+
   
-  //console.log(newroads);
-
-
 
 
   useEffect(() => {
 
-    if (map.current) return;
+    let liste1 = start_renderer();
+    setMyList(liste1);
+    console.log(typeof myList);
+    console.log("les éléments ont changé.");
 
+    //if (map.current) return;
 
     //avec fond de carte
     // map.current = new maplibregl.Map({
@@ -43,49 +45,51 @@ function Map() {
     // });
 
     //sans fond de carte
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: { 
-        version: 8,
-        sources: {}, 
-        layers: []  
-      },
-      center: [lng, lat],
-      zoom: zoom
-    });
+    // map.current = new maplibregl.Map({
+    //   container: mapContainer.current,
+    //   style: { 
+    //     version: 8,
+    //     sources: {}, 
+    //     layers: []  
+    //   },
+    //   center: [lng, lat],
+    //   zoom: zoom
+    // });
+
+    
    
-    map.current.on('load', () => {
-      addGeoJSONLayer(id,data);
-    });
+    // map.current.on('load', () => {
+    //   addGeoJSONLayer(id,data);
+    // });
 
-  }, [API_KEY, lng, lat, zoom]);
-
- 
-  // composant qui ajoute tous les geométries d'une même source de données GeoJson
-  const addGeoJSONLayer = (id,data) => {
+  });
 
   
-    //deux étapes nécessaires pour avoir un rendu graphiqhe
-    
-    map.current.addSource(id, {
-      type: 'geojson',  //le type sera toujours du geojson
-      data: data
-    });
+ 
+  // composant qui ajoute tous les geométries d'une même source de données GeoJson
+  // const addGeoJSONLayer = (id,data) => {
 
-    map.current.addLayer({
-      id: id,
-      type: type,
-      source: id
-    });
-  };
+  //   //deux étapes nécessaires pour avoir un rendu graphiqhe
+    
+  //   map.current.addSource(id, {
+  //     type: 'geojson',  //le type sera toujours du geojson
+  //     data: data
+  //   });
+
+  //   map.current.addLayer({
+  //     id: id,
+  //     type: 'geojson',
+  //     source: id
+  //   });
+  // };
 
 
 
 
 
   return (
-    <div className="map-wrap">
-      <div ref={mapContainer} className="map" />
+    <div >position de la carte
+      {/* <div ref={mapContainer} className="map-wrap" className="map" /> */}
     </div>
   );
 }

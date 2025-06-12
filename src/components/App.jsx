@@ -1,3 +1,4 @@
+import React, {useState} from "react";
 import BoutonConnect from "./BoutonConnect";
 // import BoutonConnectBis from "./BoutonConnectBis";
 // import BoutonDisconnect from "./BoutonDisconnect";
@@ -8,21 +9,20 @@ import BoutonStep from "./BoutonStep";
 import BoutonEval  from "./BoutonEval";
 import BoutonPause from "./BoutonPause";
 import BoutonStop from "./BoutonStop";
-//import Map from "./GeoMap";
+import Map from "./GeoMap";
 
 
 function App() {
 
+  const [gama, setGama] = useState(null);
+
+
   return (
     
     <div>
-      <BoutonConnect /><BoutonLoad /><BoutonPlay /><BoutonPause /><BoutonStep /><BoutonEval /><BoutonStop /><BoutonReload />
+      <BoutonConnect setGama={setGama}/><BoutonLoad /><BoutonPlay /><BoutonPause /><BoutonStep /><BoutonEval /><BoutonStop /><BoutonReload />
       {/* <Map /> */}
     </div>
-
-    // <div>
-    //   <BoutonConnectBis /><BoutonDisconnect />
-    // </div>
 
   );
 }

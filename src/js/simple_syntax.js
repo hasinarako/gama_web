@@ -18,7 +18,10 @@ export function connect(){
 	experiment = new GAMA("ws://"+host+":"+port+"/", modelPath, experimentName);
 	experiment.logger = log;
 	experiment.connect(on_connected);
+
+	return experiment;
 }
+
 export function load(){
 	if(experiment==null) return;
 	// console.log(document.getElementById("model").value);
@@ -36,9 +39,8 @@ export function load(){
 }
 export function play(){
 	if(experiment==null) return;
-	// experiment.play((onReceiveMsg)=>{start_sim()});
 	experiment.play((onReceiveMsg)=>{start_renderer()});
-	//experiment.play(onReceiveMsg);
+	// experiment.play(onReceiveMsg);
 
 }
 
@@ -68,10 +70,12 @@ export function evaluation(){
 
 
 
-function start_renderer() {
-
+export function start_renderer() {
+	
+	if(experiment==null) return;
+	
 	let liste = [];
-
+	
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
 
@@ -82,9 +86,11 @@ function start_renderer() {
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
 			const geojson = JSON.parse(geojsonString);
-			liste.push({"road":geojson});
+			liste.push({"road":geojson});    //en clé on a l'id et en valeur on a les données geojson
 		}
 	}, true);
+
+	
 
 	experiment.evalExpr("to_geojson(" + "building" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
@@ -117,6 +123,7 @@ function start_renderer() {
 		}
 	}, true);
 
+	console.log(liste);
 	return liste;
 
 }
