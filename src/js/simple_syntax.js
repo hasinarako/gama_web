@@ -8,7 +8,7 @@ import GAMA from "./../dev/GAMA";
 var experiment=null;
 
 
-export function connect(){
+export function connect(experiment){
 	
 	const host= "localhost";
 	const port= 1000;
@@ -22,7 +22,8 @@ export function connect(){
 	return experiment;
 }
 
-export function load(){
+export function load(experiment){
+
 	if(experiment==null) return;
 	// console.log(document.getElementById("model").value);
 	//experiment.modelPath='C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7';
@@ -37,30 +38,30 @@ export function load(){
 
 
 }
-export function play(){
-	if(experiment==null) return;
-	experiment.play((onReceiveMsg)=>{start_renderer()});
+export function play(gama){
+	if(gama==null) return;
+	gama.play((onReceiveMsg)=>{start_renderer(gama)});
 	// experiment.play(onReceiveMsg);
 
 }
 
-export function step(){
+export function step(experiment){
 	if(experiment==null) return;
 	experiment.step(onReceiveMsg);
 
 }
 
-export function pause(){
+export function pause(experiment){
 	if(experiment==null) return;
 	experiment.pause(onReceiveMsg);
 }
 
 
-export function evaluation(){
+export function evaluation(experiment){
 	if(experiment==null) return;
 
 	//experiment.evalExpr("people collect (each.location)", onReceiveMsg);
-	experiment.evalExpr("people as_map ( int(each) :: each.location)", onReceiveMsg);
+	experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
 
 
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
@@ -70,8 +71,7 @@ export function evaluation(){
 
 
 
-export function start_renderer() {
-	
+export function start_renderer(experiment) {
 	if(experiment==null) return;
 	
 	let liste = [];
@@ -80,11 +80,10 @@ export function start_renderer() {
 		if (typeof message == "object") {
 
 		} else {
-			
-			
 			var parsed = JSON.parse(message);
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
+			console.log(typeof geojsonString);
 			const geojson = JSON.parse(geojsonString);
 			liste.push({"road":geojson});    //en clé on a l'id et en valeur on a les données geojson
 		}
@@ -139,7 +138,7 @@ export function reload(){
 	experiment.reload();
 }
 
-export function stop(){
+export function stop(experiment){
 
 	if(experiment==null) return;
 	experiment.stop(onReceiveMsg);

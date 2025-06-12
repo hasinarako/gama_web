@@ -1,9 +1,9 @@
 import {step } from "../js/simple_syntax.js";
 
 
-function BoutonStep() {
+function BoutonStep({gama}) {
     return (
-        <button onClick={() => step()}>Step</button>
+        <button onClick={() => step(gama)}>Step</button>
     )
 }
 

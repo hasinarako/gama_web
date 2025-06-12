@@ -1,7 +1,7 @@
 import {evaluation } from "../js/simple_syntax.js";
 
-function BoutonEval() {
-    return (<button onClick={() => evaluation() }>Evaluation</button>)
+function BoutonEval({gama}) {
+    return (<button onClick={() => evaluation(gama) }>Evaluation</button>)
 }
 
 export default BoutonEval; 

@@ -1,9 +1,9 @@
 import {reload } from "../js/simple_syntax.js";
 
 
-function BoutonReload() {
+function BoutonReload({gama}) {
     return (
-        <button onClick={() => reload()}>Reload</button>
+        <button onClick={() => reload(gama)}>Reload</button>
     )
 }
 

@@ -1,10 +1,9 @@
 import {connect } from "../js/simple_syntax.js";
 
-function BoutonConnect({setGama}) {
-
+function BoutonConnect({setGama, gama}) {
 
     const handleClick = () => {
-        const envir = connect();
+        const envir = connect(gama);
         setGama(envir);
     }
  

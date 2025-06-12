@@ -1,9 +1,9 @@
 import {load } from "../js/simple_syntax.js";
 
+function BoutonLoad({gama}) {
 
-function BoutonLoad() {
     return (
-        <button onClick={() => load()}>Load</button>
+        <button onClick={() => load(gama)}>Load</button>
     )
 }
 

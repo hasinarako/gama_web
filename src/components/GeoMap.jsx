@@ -1,14 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react';
+import {evalExpr} from "../dev/GAMA.js";
 import maplibregl from 'maplibre-gl';
 import {start_renderer} from "../js/simple_syntax.js";
-import {evalExpr} from "../dev/GAMA.js";
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
 
 
 
 
-function Map() {
+function Map({gama}) {
 
   const [myList, setMyList] = useState([]);
 
@@ -29,7 +29,7 @@ function Map() {
 
   useEffect(() => {
 
-    let liste1 = start_renderer();
+    let liste1 = start_renderer(gama);
     setMyList(liste1);
     console.log(typeof myList);
     console.log("les éléments ont changé.");

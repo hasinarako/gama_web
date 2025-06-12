@@ -1,9 +1,9 @@
 import {play } from "../js/simple_syntax.js";
 
 
-function BoutonPlay() {
+function BoutonPlay({gama}) {
     return (
-        <button onClick={() => play()}>Play</button>
+        <button onClick={() => play(gama)}>Play</button>
     )
 }
 

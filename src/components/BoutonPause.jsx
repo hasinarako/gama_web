@@ -1,7 +1,7 @@
 import {pause } from "../js/simple_syntax.js";
 
-function BoutonPause() {
-    return (<button onClick={() => pause() }>Pause</button>)
+function BoutonPause({gama}) {
+    return (<button onClick={() => pause(gama) }>Pause</button>)
 }
 
 export default BoutonPause; 
