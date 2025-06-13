@@ -10,33 +10,31 @@ import './../style/Map.css';
 
 function Map({gama}) {
 
-  const [myList, setMyList] = useState([]);
+  //liste contenant les données geojson
+  const [gjslist, setGjsList] = useState([]);
 
-  // const mapContainer = useRef(null);
-  // const map = useRef(null);
-
-
-  // //centre de la ville d'Alpes d'Huez
-  // const lng = 6.08;
-  // const lat = 45.09;
+  const mapContainer = useRef(null);
+  const map = useRef(null);
 
 
-  // const zoom = 10;
-  // const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
+  //centre de la ville d'Alpes d'Huez
+  const lng = 108;
+  const lat = 18;
+
+
+  const zoom = 10;
+  const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
 
   
 
 
-  useEffect(() => {
+  useEffect(() => {  
 
-    let liste1 = start_renderer(gama);
-    setMyList(liste1);
-    console.log(typeof myList);
-    console.log("les éléments ont changé.");
+  
 
-    //if (map.current) return;
+    if (map.current) return;
 
-    //avec fond de carte
+    // avec fond de carte
     // map.current = new maplibregl.Map({
     //   container: mapContainer.current,
     //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
@@ -54,7 +52,9 @@ function Map({gama}) {
     //   },
     //   center: [lng, lat],
     //   zoom: zoom
-    // });
+
+
+    // }, [API_KEY, lat, lng, zoom]);
 
     
    
@@ -64,6 +64,15 @@ function Map({gama}) {
 
   });
 
+
+  useEffect(() => {
+
+    let liste1 = start_renderer(gama);
+    setGjsList(liste1);
+    console.log(gjslist);
+
+
+  },[gjslist]);
   
  
   // composant qui ajoute tous les geométries d'une même source de données GeoJson
@@ -88,8 +97,8 @@ function Map({gama}) {
 
 
   return (
-    <div >position de la carte
-      {/* <div ref={mapContainer} className="map-wrap" className="map" /> */}
+    <div className="map-wrap">
+      {/* <div ref={mapContainer}  className="map" /> */}
     </div>
   );
 }

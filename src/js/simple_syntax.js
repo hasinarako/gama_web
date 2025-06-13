@@ -40,8 +40,8 @@ export function load(experiment){
 }
 export function play(gama){
 	if(gama==null) return;
-	gama.play((onReceiveMsg)=>{start_renderer(gama)});
-	// experiment.play(onReceiveMsg);
+	// gama.play((onReceiveMsg)=>{start_renderer(gama)});
+	experiment.play(onReceiveMsg);
 
 }
 
@@ -60,7 +60,7 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	//experiment.evalExpr("people collect (each.location)", onReceiveMsg);
+	experiment.evalExpr("people collect (each.location)", onReceiveMsg);
 	experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
 
 
@@ -83,7 +83,6 @@ export function start_renderer(experiment) {
 			var parsed = JSON.parse(message);
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
-			console.log(typeof geojsonString);
 			const geojson = JSON.parse(geojsonString);
 			liste.push({"road":geojson});    //en clé on a l'id et en valeur on a les données geojson
 		}
