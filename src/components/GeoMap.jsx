@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
-import {evalExpr} from "../dev/GAMA.js";
+import React, { useRef, useEffect, useState} from 'react';
 import maplibregl from 'maplibre-gl';
 import {start_renderer} from "../js/simple_syntax.js";
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -8,10 +7,10 @@ import './../style/Map.css';
 
 
 
-function Map({gama}) {
+function Map({gama, isPlaying, isLoaded}) {
 
   //liste contenant les données geojson
-  const [gjslist, setGjsList] = useState([]);
+  const [gjslist, setGjsList] = useState({});
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -28,11 +27,17 @@ function Map({gama}) {
   
 
 
+  //trop de render, bug
+  // if (isPlaying&&Object.keys(gjslist).length==0){
+  //   let liste1 = start_renderer(gama);
+  //   setGjsList(liste1);
+  //   console.log(liste1);
+  // };
+
+
   useEffect(() => {  
 
-  
-
-    if (map.current) return;
+    if (map.current) return;  //évite de regénérer la carte 
 
     // avec fond de carte
     // map.current = new maplibregl.Map({
@@ -40,45 +45,52 @@ function Map({gama}) {
     //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
     //   center: [lng, lat],
     //   zoom: zoom
-    // });
+    // },[API_KEY, lng, lat]);
 
     //sans fond de carte
-    // map.current = new maplibregl.Map({
-    //   container: mapContainer.current,
-    //   style: { 
-    //     version: 8,
-    //     sources: {}, 
-    //     layers: []  
-    //   },
-    //   center: [lng, lat],
-    //   zoom: zoom
-
-
-    // }, [API_KEY, lat, lng, zoom]);
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: { 
+        version: 8,
+        sources: {}, 
+        layers: []  
+      },
+      center: [lng, lat],
+      zoom: zoom
+      });
 
     
    
     // map.current.on('load', () => {
     //   addGeoJSONLayer(id,data);
-    // });
+
+    // map.current.on('load', () => {
+    // let liste = start_renderer(gama);
+    // setGjsList(liste);
+    // console.log(gjslist);
+    // })
+
 
   });
 
 
-  useEffect(() => {
+  
+  // useEffect(() => {
 
-    let liste1 = start_renderer(gama);
-    setGjsList(liste1);
-    console.log(gjslist);
+  //   if (isLoaded){
+  //     let liste1 = start_renderer(gama);
+  //     setGjsList(liste1);
+  //     console.log(gjslist);
+  //   };
 
-
-  },[gjslist]);
+    
+  // });
   
  
-  // composant qui ajoute tous les geométries d'une même source de données GeoJson
-  // const addGeoJSONLayer = (id,data) => {
+  // // composant qui ajoute tous les geométries d'une même source de données GeoJson
+  // const addGeoJSONLayer = (id,data) => {screenX
 
-  //   //deux étapes nécessaires pour avoir un rendu graphiqhe
+  // //deux étapes nécessaires pour avoir un rendu graphiqhe
     
   //   map.current.addSource(id, {
   //     type: 'geojson',  //le type sera toujours du geojson
@@ -93,14 +105,13 @@ function Map({gama}) {
   // };
 
 
-
-
-
   return (
     <div className="map-wrap">
-      {/* <div ref={mapContainer}  className="map" /> */}
+      <div ref={mapContainer}  className="map" />
     </div>
   );
-}
+
+  };
+
 
 export default Map;

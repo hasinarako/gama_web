@@ -17,20 +17,20 @@ function App() {
 
   //booléen qui dit si la simulation tourne
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const [isLoaded, setIsLoaded] = useState(false);
 
 
   return (
     
     <div>
       <BoutonConnect setGama={setGama} gama={gama}/>
-      <BoutonLoad gama={gama}/>
+      <BoutonLoad gama={gama} setIsLoaded={setIsLoaded}/>
       <BoutonPlay gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonPause gama={gama}/><BoutonStep gama={gama}/>
-      <BoutonEval gama={gama}/>
+      <BoutonEval gama={gama} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonReload gama={gama}/>
-      <Map gama={gama} isPlaying={isPlaying}/>
+      <Map gama={gama} isPlaying={isPlaying} isLoaded={isLoaded}/>
     </div>
 
   );

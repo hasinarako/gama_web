@@ -1,9 +1,15 @@
 import {load } from "../js/simple_syntax.js";
 
-function BoutonLoad({gama}) {
+function BoutonLoad({gama, setIsLoaded}) {
+
+    const handleClick = () => {
+            setIsLoaded(true);
+            load(gama);
+        }
+
 
     return (
-        <button onClick={() => load(gama)}>Load</button>
+        <button onClick={handleClick}>Load</button>
     )
 }
 

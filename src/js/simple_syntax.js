@@ -38,10 +38,10 @@ export function load(experiment){
 
 
 }
-export function play(gama){
-	if(gama==null) return;
-	// gama.play((onReceiveMsg)=>{start_renderer(gama)});
-	experiment.play(onReceiveMsg);
+export function play(experiment){
+	if(experiment==null) return;
+	experiment.play((onReceiveMsg)=>{start_renderer(experiment)});
+	// experiment.play(onReceiveMsg);
 
 }
 
@@ -74,7 +74,7 @@ export function evaluation(experiment){
 export function start_renderer(experiment) {
 	if(experiment==null) return;
 	
-	let liste = [];
+	let liste = {};
 	
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
@@ -84,7 +84,7 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
 			const geojson = JSON.parse(geojsonString);
-			liste.push({"road":geojson});    //en clé on a l'id et en valeur on a les données geojson
+			liste["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
 		}
 	}, true);
 
@@ -100,7 +100,7 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content; 
 			const geojson = JSON.parse(geojsonString);
-			liste.push({"building":geojson});
+			liste["building"]=geojson;
 
 
 		}
@@ -116,12 +116,11 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content;  
 			const geojson = JSON.parse(geojsonString);
-			liste.push({"people":geojson});
+			liste["people"]=geojson;
 
 		}
 	}, true);
 
-	console.log(liste);
 	return liste;
 
 }

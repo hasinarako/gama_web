@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {play } from "../js/simple_syntax.js";
 
 
