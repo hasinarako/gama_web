@@ -1,8 +1,12 @@
-import {evaluation } from "../js/simple_syntax.js";
+import { evaluation } from "../js/simple_syntax.js";
 
-function BoutonEval({gama}) {
+function BoutonEval({ gama, setGeojsonData }) {
+  const handleClick = () => {
+    const result = evaluation(gama);
+    setGeojsonData(result); // update state in parent
+  };
 
-    return (<button onClick={() => evaluation(gama) }>Evaluation</button>)
+  return <button onClick={handleClick}>Evaluation</button>;
 }
 
-export default BoutonEval; 
+export default BoutonEval;

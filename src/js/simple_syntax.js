@@ -40,8 +40,8 @@ export function load(experiment){
 }
 export function play(experiment){
 	if(experiment==null) return;
-	experiment.play((onReceiveMsg)=>{start_renderer(experiment)});
-	// experiment.play(onReceiveMsg);
+	// experiment.play((onReceiveMsg)=>{start_renderer(experiment)});
+	experiment.play(onReceiveMsg);
 
 }
 
@@ -60,8 +60,14 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	experiment.evalExpr("people collect (each.location)", onReceiveMsg);
-	experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
+	let dico = {};
+
+	dico = start_renderer(experiment);
+
+	return dico;
+
+	// experiment.evalExpr("people collect (each.location)", onReceiveMsg);
+	// experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
 
 
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
@@ -74,7 +80,7 @@ export function evaluation(experiment){
 export function start_renderer(experiment) {
 	if(experiment==null) return;
 	
-	let liste = {};
+	let dico = {};
 	
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
@@ -84,7 +90,7 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
 			const geojson = JSON.parse(geojsonString);
-			liste["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
+			dico["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
 		}
 	}, true);
 
@@ -100,7 +106,7 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content; 
 			const geojson = JSON.parse(geojsonString);
-			liste["building"]=geojson;
+			dico["building"]=geojson;
 
 
 		}
@@ -116,12 +122,12 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content;  
 			const geojson = JSON.parse(geojsonString);
-			liste["people"]=geojson;
+			dico["people"]=geojson;
 
 		}
 	}, true);
 
-	return liste;
+	return dico;
 
 }
 
@@ -160,7 +166,7 @@ function onReceiveMsg(e) {
 	log(e);
 }
 
-function log(e) {
+export function log(e) {
 	const element = document.getElementById("output");
 	element.innerHTML +=(e);
 	element.innerHTML +=("</br>");

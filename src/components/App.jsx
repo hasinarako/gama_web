@@ -19,6 +19,9 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  //dictionnaire des données geojson de tous les agents
+  const [geojsonData, setGeojsonData] = useState({});
+
 
   return (
     
@@ -27,10 +30,10 @@ function App() {
       <BoutonLoad gama={gama} setIsLoaded={setIsLoaded}/>
       <BoutonPlay gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonPause gama={gama}/><BoutonStep gama={gama}/>
-      <BoutonEval gama={gama} />
+      <BoutonEval gama={gama} setGeojsonData={setGeojsonData} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonReload gama={gama}/>
-      <Map gama={gama} isPlaying={isPlaying} isLoaded={isLoaded}/>
+      <Map gama={gama}  geojsonData={geojsonData}/>
     </div>
 
   );
