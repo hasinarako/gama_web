@@ -123,7 +123,7 @@ function Map({gama,geojsonData,setGeojsonData}) {
       
       let liste = JSON.parse(geojsonData[species]);
       let liste2 = liste.features;
-      console.log(liste2);
+      // console.log(liste2);
 
       for (const source of liste2){
         
@@ -153,11 +153,17 @@ function Map({gama,geojsonData,setGeojsonData}) {
         };
 
 
+        if (map.current.getSource(id)) {
+          map.current.getSource(id).setData(source);
+          map.current.removeLayer(id);
+        }else{
+            map.current.addSource(id, {
+              'type': 'geojson',
+              'data': source
+            });
+        };
 
-        map.current.addSource(id, {
-            'type': 'geojson',
-            'data': source
-        });
+        
 
         map.current.addLayer({
             'id': id,
@@ -177,7 +183,7 @@ function Map({gama,geojsonData,setGeojsonData}) {
     setGeojsonData(result); 
 
     for (let key in geojsonData){
-      console.log(key);
+      // console.log(key);
       addGeoJSONLayer(key);
     }
 

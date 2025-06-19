@@ -62,10 +62,6 @@ export function evaluation(experiment){
 
 	return start_renderer(experiment);
 
-	// experiment.evalExpr("people collect (each.location)", onReceiveMsg);
-	// experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
-
-
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
