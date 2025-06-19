@@ -30,10 +30,10 @@ function App() {
       <BoutonLoad gama={gama} setIsLoaded={setIsLoaded}/>
       <BoutonPlay gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonPause gama={gama}/><BoutonStep gama={gama}/>
-      <BoutonEval gama={gama} setGeojsonData={setGeojsonData} />
+      <BoutonEval gama={gama} setGeojsonData={setGeojsonData} geojsonData={geojsonData} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonReload gama={gama}/>
-      <Map gama={gama}  geojsonData={geojsonData}/>
+      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData}/>
     </div>
 
   );

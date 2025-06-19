@@ -1,12 +1,10 @@
-import React, { useRef, useEffect, useState, use} from 'react';
+import React, { useRef, useEffect} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
+import { start_renderer } from '../js/simple_syntax';
 
-
-
-
-function Map({gama,geojsonData}) {
+function Map({gama,geojsonData,setGeojsonData}) {
 
   //liste contenant les données geojson
 
@@ -18,69 +16,8 @@ function Map({gama,geojsonData}) {
   const lng = 108;
   const lat = 18;
 
-
-  const zoom = 10;
-  const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
-
-  
-
-
-  //trop de render, bug
-  // if (isPlaying&&Object.keys(gjslist).length==0){
-  //   let liste1 = start_renderer(gama);
-  //   setGjsList(liste1);
-  //   console.log(liste1);
-  // };
-
-
-  useEffect(() => {  
-
-    if (map.current) return;  //évite de regénérer la carte 
-
-    // avec fond de carte
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-      center: [-68.13734351262877, 45.137451890638886],
-      zoom: zoom
-    },[API_KEY, lng, lat]);
-
-    //sans fond de carte
-    // map.current = new maplibregl.Map({
-    //   container: mapContainer.current,
-    //   style: { 
-    //     version: 8,
-    //     sources: {}, 
-    //     layers: []  
-    //   },
-    //   center: [lng, lat],
-    //   zoom: zoom
-    //   });
-
-  },[]);
-
-
-  // hook where the geojson is added unto the map
-  useEffect(() => {
-
-    if (!map.current || !geojsonData) return;
-
-    console.log(geojsonData);
-    //addGeoJSONLayer(geojsonData);
-
-
-  },[geojsonData]);  //renders only when the geojson changes
-
-
-
-  useEffect(() => { 
-    
-    if (!map.current) return;
-    
-    map.current.on('load', () => {
-        map.current.addSource('maine', {
-            'type': 'geojson',
-            'data': {
+  //for test
+  let maine = {
                 'type': 'Feature',
                 'geometry': {
                     'type': 'Polygon',
@@ -109,67 +46,149 @@ function Map({gama,geojsonData}) {
                         ]
                     ]
                 }
-            }
+            };
+
+  const zoom = 15;
+  const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
+
+  
+
+  useEffect(() => {  
+
+    if (map.current) return;  //évite de regénérer la carte 
+
+    // avec fond de carte
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
+      center: [lng, lat],
+      zoom: zoom
+    },[API_KEY, lng, lat]);
+
+    //sans fond de carte
+    // map.current = new maplibregl.Map({
+    //   container: mapContainer.current,
+    //   style: { 
+    //     version: 8,
+    //     sources: {}, 
+    //     layers: []  
+    //   },
+    //   center: [lng, lat],
+    //   zoom: zoom
+    //   });
+
+  },[]);
+
+
+  //test
+  useEffect(() => { 
+    
+    if (!map.current) return;
+    
+    map.current.on('dblclick', () => {
+
+        map.current.addSource('maine', {
+            'type': 'geojson',
+            'data': maine
         });
+
         map.current.addLayer({
             'id': 'maine',
             'type': 'fill',
             'source': 'maine',
             'layout': {},
             'paint': {
-                'fill-color': '#088',
+                'fill-color': '#000000',
                 'fill-opacity': 0.8
             }
-        });
+          });
 
-         });
+        });
   });
+
 
 
 
   // composant qui ajoute tous les geométries d'une même source de données GeoJson
 
-  const addGeoJSONLayer = (data) => {
+  const addGeoJSONLayer = (species) => {
 
     if (!map.current) return;
 
-    for (let id in data){
-
+      let id = "";
       let typeLayer = "";
+      let color = "";
       let paintConfig = {};
 
-      if (id=="road"){
-        typeLayer = "line";
-      }else if (id="building"){
-        typeLayer = "fill";
-        paintConfig['fill-color'] = '#088';
-        paintConfig['fill-opacity'] = 0.8;
-      }else if (id="people"){
-        typeLayer = "circle";
-        paintConfig['circle-layer'] = '#088';
-        paintConfig['circle-opacity'] = 0.8;
-      }
+      
+      let liste = JSON.parse(geojsonData[species]);
+      let liste2 = liste.features;
+      console.log(liste2);
 
-      map.current.addSource(id, {
-        type: typeLayer,  
-        data: data[id]
-      });
-
-      map.current.addLayer({
-        id: id,
-        type: typeLayer,
-        source: id
-      });
-    };
+      for (const source of liste2){
+        
+        typeLayer = source["geometry"]["type"];
+        color = source["properties"]["color"];
+        id = species+source["id"];
 
 
-    
+        if (typeLayer=="Linestring"){
+          typeLayer = "line";
+          paintConfig = {
+            'line-color' : color,
+            'line-opacity' : 0.8
+          };
+        }else if (typeLayer=="Polygon"){
+          typeLayer = "fill";
+          paintConfig = {
+            'fill-color' : color,
+            'fill-opacity' : 0.8
+          };
+        }else if (typeLayer="Point"){
+          typeLayer = "circle";
+          paintConfig = {
+            'circle-color' : color,
+            'circle-opacity' : 0.8
+          };
+        };
+
+
+
+        map.current.addSource(id, {
+            'type': 'geojson',
+            'data': source
+        });
+
+        map.current.addLayer({
+            'id': id,
+            'type': typeLayer,
+            'source': id,
+            'layout': {},
+            'paint': paintConfig
+          });
+
+        };
+
+  };
+
+  const handleClick = () =>{
+
+    const result = start_renderer(gama);
+    setGeojsonData(result); 
+
+    for (let key in geojsonData){
+      console.log(key);
+      addGeoJSONLayer(key);
+    }
+
   };
 
 
   return (
     <div className="map-wrap">
+      <button onClick={handleClick} >Load Map</button>
       <div ref={mapContainer}  className="map" />
+      
     </div>
   );
 

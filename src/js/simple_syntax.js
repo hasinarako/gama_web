@@ -60,11 +60,7 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	let dico = {};
-
-	dico = start_renderer(experiment);
-
-	return dico;
+	return start_renderer(experiment);
 
 	// experiment.evalExpr("people collect (each.location)", onReceiveMsg);
 	// experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", onReceiveMsg);
@@ -90,7 +86,9 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content;  // encore encodé et avec des antislash
 			const geojson = JSON.parse(geojsonString);
+			
 			dico["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
+			//log(geojson);
 		}
 	}, true);
 
@@ -106,6 +104,7 @@ export function start_renderer(experiment) {
 
 			const geojsonString = parsed.content; 
 			const geojson = JSON.parse(geojsonString);
+			// log(geojson);
 			dico["building"]=geojson;
 
 
@@ -123,6 +122,7 @@ export function start_renderer(experiment) {
 			const geojsonString = parsed.content;  
 			const geojson = JSON.parse(geojsonString);
 			dico["people"]=geojson;
+			//log(geojson);
 
 		}
 	}, true);
