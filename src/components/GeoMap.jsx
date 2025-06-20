@@ -2,7 +2,8 @@ import React, { useRef, useEffect} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
-import { start_renderer } from '../js/simple_syntax';
+import { start_renderer} from '../js/simple_syntax';
+import { color } from 'd3';
 
 function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
@@ -16,7 +17,7 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
   const lng = 108;
   const lat = 18;
 
-  const zoom = 15;
+  const zoom = 20;
   const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
 
   
@@ -45,10 +46,11 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     //   zoom: zoom
     //   });
 
+
   },[]);
 
 
-  // composant qui ajoute tous les geométries d'une même source de données GeoJson
+  // composant qui ajoute toutes les espèces d'une même source de données GeoJson
 
   function addGeoJSONLayer(species) {
 
@@ -62,14 +64,14 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
       
       let liste = JSON.parse(geojsonData[species]);
       let liste2 = liste.features;
-      console.log(liste2);
+      // console.log(liste2);
 
       for (const source of liste2){
         
         typeLayer = source["geometry"]["type"];
-        color = source["properties"]["color"];
         id = species+source["id"];
-
+        color = source["properties"]["color"];
+        
 
         if (typeLayer=="LineString"){
           typeLayer = "line";
@@ -106,8 +108,6 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
             
         };
 
-        
-
         map.current.addLayer({
             'id': id,
             'type': typeLayer,
@@ -120,15 +120,52 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
   };
 
+  function addBounds(data){
+
+    if (map.current.getSource('bound')) return;
+
+    let color = "#000000";
+
+    //is undefined
+    console.log(data['bound']);
+
+    // map.current.addSource("bound",{
+    //   'type': 'geojson',
+    //   'data' : data['bound']
+    // });
+
+    // map.current.addLayer({
+    //   'id' : 'bound',
+    //   'type' : 'fill',
+    //   'source' : 'bound',
+    //   'layout' : {},
+    //   'paint' : {
+    //     'fill-color' : color,
+    //     'fill-opacity' : 0.2
+    //   }
+    // });
+  };
+
+
   function handleClick(){
 
-    const result = start_renderer(gama);
+    let bounds;
+    let result;
+
+    [bounds,result] = start_renderer(gama);
+
     setGeojsonData(result); 
 
+    
+
     for (let key in geojsonData){
-      console.log(key);
       addGeoJSONLayer(key);
     }
+    
+    //adding bounds and adjusting zoom
+
+    addBounds(bounds);
+    
 
   };
 

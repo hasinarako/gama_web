@@ -60,13 +60,14 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	agents(experiment);
+	start_renderer(experiment);
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
 }
 
 function agents(experiment){
+
 	if(experiment==null) return;
 	let liste = [];
 	let final = [];
@@ -78,7 +79,6 @@ function agents(experiment){
 		var parsed = JSON.parse(message)["content"];
 		var parsed2 = JSON.parse(parsed)["gama_contents"];
 
-		// console.log(parsed2);
 
 		for (let key of parsed2){
 			sep = key["agent_reference"].indexOf(".");
@@ -96,7 +96,16 @@ export function start_renderer(experiment) {
 	
 
 	let dico = {};
-	
+	let bounds = {};
+
+	//ajout des limits
+	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
+		var parsed = JSON.parse(message);
+		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
+	})
+
+
+	// remplir le dico des données geojson de chaque espèce
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 		if (typeof message == "object") {
 
@@ -107,7 +116,7 @@ export function start_renderer(experiment) {
 			const geojson = JSON.parse(geojsonString);
 			
 			dico["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
-			log(geojson);
+			//log(geojson);
 		}
 	}, true);
 
@@ -146,7 +155,7 @@ export function start_renderer(experiment) {
 		}
 	}, true);
 
-	return dico;
+	return [bounds,dico];
 
 }
 
