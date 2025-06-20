@@ -3,8 +3,8 @@ import {load } from "../js/simple_syntax.js";
 function BoutonLoad({gama, setIsLoaded}) {
 
     const handleClick = () => {
-            setIsLoaded(true);
             load(gama);
+            setIsLoaded(true);
         }
 
 

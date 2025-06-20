@@ -60,18 +60,41 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	return start_renderer(experiment);
-
+	agents(experiment);
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
 }
 
+function agents(experiment){
+	if(experiment==null) return;
+	let liste = [];
+	let final = [];
+	let temp;
+	let sep;
+
+	experiment.evalExpr("world.agents", function(message){
+
+		var parsed = JSON.parse(message)["content"];
+		var parsed2 = JSON.parse(parsed)["gama_contents"];
+
+		// console.log(parsed2);
+
+		for (let key of parsed2){
+			sep = key["agent_reference"].indexOf(".");
+			temp = key["agent_reference"].slice(sep+1);
+			liste.push(temp);
+		}
+
+	});
+
+};
 
 
 export function start_renderer(experiment) {
 	if(experiment==null) return;
 	
+
 	let dico = {};
 	
 	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
@@ -84,7 +107,7 @@ export function start_renderer(experiment) {
 			const geojson = JSON.parse(geojsonString);
 			
 			dico["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
-			//log(geojson);
+			log(geojson);
 		}
 	}, true);
 
