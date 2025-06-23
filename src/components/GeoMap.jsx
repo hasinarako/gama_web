@@ -1,9 +1,8 @@
-import React, { useRef, useEffect} from 'react';
+import React, { useRef, useEffect, useState} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
 import { start_renderer} from '../js/simple_syntax';
-import { color } from 'd3';
 
 function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
@@ -11,11 +10,12 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
+  const [bound,SetBound] = useState({});
 
 
   //centre de la ville d'Alpes d'Huez
-  const lng = 108;
-  const lat = 18;
+  const lng = 0;
+  const lat = 0;
 
   const zoom = 20;
   const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
@@ -30,7 +30,7 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-      center: [lng, lat],
+      center: [lng,lat],
       zoom: zoom
     },[API_KEY, lng, lat]);
 
@@ -40,9 +40,11 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     //   style: { 
     //     version: 8,
     //     sources: {}, 
-    //     layers: []  
+    //     layers: [],
+    //     glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${API_KEY}`,
+    //   sprite: `https://api.maptiler.com/maps/streets-v2/sprite?key=${API_KEY}`
     //   },
-    //   center: [lng, lat],
+    //   center: [lng,lat],
     //   zoom: zoom
     //   });
 
@@ -126,24 +128,57 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
     let color = "#000000";
 
-    //is undefined
-    console.log(data['bound']);
+    SetBound(data);
+    CenterBound();
 
-    // map.current.addSource("bound",{
-    //   'type': 'geojson',
-    //   'data' : data['bound']
-    // });
+    map.current.addSource("bound",{
+      'type': 'geojson',
+      'data' : bound['bound']
+    });
 
-    // map.current.addLayer({
-    //   'id' : 'bound',
-    //   'type' : 'fill',
-    //   'source' : 'bound',
-    //   'layout' : {},
-    //   'paint' : {
-    //     'fill-color' : color,
-    //     'fill-opacity' : 0.2
-    //   }
-    // });
+    map.current.addLayer({
+      'id' : 'bound',
+      'type' : 'line',
+      'source' : 'bound',
+      'layout' : {},
+      'paint' : {
+        'line-color' : color,
+        'line-opacity' : 0.2
+      }
+    });
+
+
+    //ajuster la position de la vue en fonction du modèle et de ses limites
+    function CenterBound(){
+
+      if (!bound) return ;
+      
+      let liste = bound['bound']['geometry']['coordinates'];
+      let x,y,z;
+      x=y=z=0;
+      
+      for (let i=0; i<liste.length;i++){
+  
+        x += liste[i][0][0];
+        y += liste[i][0][1];
+        z += liste[i][0][2];
+      };
+      x = x/liste.length;
+      y = y/liste.length;
+      z = z/liste.length;
+
+      console.log(x,y);
+
+      map.current.flyTo({
+            center: [
+                x,
+                y
+            ],
+            essential: true 
+        });
+
+    };
+
   };
 
 

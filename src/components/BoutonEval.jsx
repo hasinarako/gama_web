@@ -1,12 +1,11 @@
-import {evaluation} from "../js/simple_syntax.js";
-
-function BoutonEval({ gama, setGeojsonData, geojsonData }) {
+import {agents} from "../js/simple_syntax.js";
+function BoutonEval({ gama }) {
 
 
   const handleClick = () => {
 
-    evaluation(gama);
-
+    agents(gama);
+    
 
 
   };

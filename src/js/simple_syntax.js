@@ -60,13 +60,14 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	start_renderer(experiment);
+	agents(experiment);
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
 }
 
-function agents(experiment){
+
+export function agents(experiment){
 
 	if(experiment==null) return;
 	let liste = [];
@@ -83,11 +84,16 @@ function agents(experiment){
 		for (let key of parsed2){
 			sep = key["agent_reference"].indexOf(".");
 			temp = key["agent_reference"].slice(sep+1);
-			liste.push(temp);
-		}
+			sep = temp.indexOf('[');
+			liste.push(temp.slice(0,sep));
+		};
 
+		final = new Set(liste);
+		// console.log(final); result for road_traffic-> {'building', 'road', 'people'}
+		return final;
+		
 	});
-
+	
 };
 
 
