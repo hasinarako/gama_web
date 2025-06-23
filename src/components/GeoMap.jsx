@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
-import { start_renderer} from '../js/simple_syntax';
+import { agents, start_renderer} from '../js/simple_syntax';
 
 function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
@@ -167,7 +167,6 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
       y = y/liste.length;
       z = z/liste.length;
 
-      console.log(x,y);
 
       map.current.flyTo({
             center: [
@@ -187,7 +186,7 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     let bounds;
     let result;
 
-    [bounds,result] = start_renderer(gama);
+    [bounds,result] = agents(gama);
 
     setGeojsonData(result); 
 

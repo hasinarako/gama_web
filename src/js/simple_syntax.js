@@ -70,10 +70,18 @@ export function evaluation(experiment){
 export function agents(experiment){
 
 	if(experiment==null) return;
+
 	let liste = [];
 	let final = [];
+	let dico = {};
+	let bounds = {};
 	let temp;
 	let sep;
+
+	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
+		var parsed = JSON.parse(message);
+		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
+	})
 
 	experiment.evalExpr("world.agents", function(message){
 
@@ -89,81 +97,36 @@ export function agents(experiment){
 		};
 
 		final = new Set(liste);
-		// console.log(final); result for road_traffic-> {'building', 'road', 'people'}
-		return final;
+		//result for road_traffic-> {'building', 'road', 'people'}
+
+		for (const species of final){
+			
+			console.log(species);
+
+			experiment.evalExpr("to_geojson(" + species + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
+
+			if (typeof message == "object") {
+
+			} else {
+				var parsed = JSON.parse(message);
+
+				const geojsonString = parsed.content;  // encore encodé et avec des antislash
+				const geojson = JSON.parse(geojsonString);
+				
+				dico[species]=geojson;    //en clé on a l'id et en valeur on a les données geojson
+				//log(geojson);
+			}
+			}, true);
+			
+		};
 		
 	});
+
+	return [bounds,dico];
 	
 };
 
 
-export function start_renderer(experiment) {
-	if(experiment==null) return;
-	
-
-	let dico = {};
-	let bounds = {};
-
-	//ajout des limits
-	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
-		var parsed = JSON.parse(message);
-		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
-	})
-
-
-	// remplir le dico des données geojson de chaque espèce
-	experiment.evalExpr("to_geojson(" + "road" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
-		if (typeof message == "object") {
-
-		} else {
-			var parsed = JSON.parse(message);
-
-			const geojsonString = parsed.content;  // encore encodé et avec des antislash
-			const geojson = JSON.parse(geojsonString);
-			
-			dico["road"]=geojson;    //en clé on a l'id et en valeur on a les données geojson
-			//log(geojson);
-		}
-	}, true);
-
-	
-
-	experiment.evalExpr("to_geojson(" + "building" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
-		if (typeof message == "object") {
-
-		} else {
-			
-			
-			var parsed = JSON.parse(message);
-
-			const geojsonString = parsed.content; 
-			const geojson = JSON.parse(geojsonString);
-			// log(geojson);
-			dico["building"]=geojson;
-
-
-		}
-	}, true);
-
-	experiment.evalExpr("to_geojson(" + "people" + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
-		if (typeof message == "object") {
-
-		} else {
-			
-			
-			var parsed = JSON.parse(message);
-
-			const geojsonString = parsed.content;  
-			const geojson = JSON.parse(geojsonString);
-			dico["people"]=geojson;
-			//log(geojson);
-
-		}
-	}, true);
-
-	return [bounds,dico];
-
-}
 
 export function reload(){
 	if(experiment==null) return;
