@@ -1,11 +1,11 @@
 import {pause} from "../js/simple_syntax.js";
 
-function BoutonPause({gama,setIsPlaying}) {
+function BoutonPause({gama,setIsPaused}) {
 
    const handleClick = () => {
-               setIsPlaying(false);
-               pause(gama);
-           }
+        setIsPaused(true);
+        pause(gama);
+    }
    
        return (
            <button onClick={handleClick}>Pause</button>

@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
-import { agents, start_renderer} from '../js/simple_syntax';
+import {agents} from '../js/simple_syntax';
 
 function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
 
@@ -245,10 +245,10 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
 
 
   return (
+
     <div className="map-wrap">
       <button onClick={handleClick} >Load Map</button>
       <div ref={mapContainer}  className="map" />
-      
     </div>
   );
 

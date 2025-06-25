@@ -29,8 +29,8 @@ function App() {
     <div>
       <BoutonConnect setGama={setGama} gama={gama}/>
       <BoutonLoad gama={gama} setIsLoaded={setIsLoaded}/>
-      <BoutonPlay gama={gama} setIsPlaying={setIsPlaying}/>
-      <BoutonPause gama={gama} setIsPlaying={setIsPlaying}/><BoutonStep gama={gama}/>
+      <BoutonPlay gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/>
+      <BoutonPause gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/><BoutonStep gama={gama}/>
       <BoutonEval gama={gama} setGeojsonData={setGeojsonData} geojsonData={geojsonData} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonReload gama={gama}/>
