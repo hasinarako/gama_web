@@ -18,6 +18,7 @@ function App() {
   //booléen qui dit si la simulation tourne
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   //dictionnaire des données geojson de tous les agents
   const [geojsonData, setGeojsonData] = useState({});
@@ -33,7 +34,7 @@ function App() {
       <BoutonEval gama={gama} setGeojsonData={setGeojsonData} geojsonData={geojsonData} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying}/>
       <BoutonReload gama={gama}/>
-      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isLoaded={isLoaded}/>
+      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying}/>
     </div>
 
   );

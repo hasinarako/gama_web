@@ -1,7 +1,7 @@
 import {play } from "../js/simple_syntax.js";
 
 
-function BoutonPlay({gama, setIsPlaying}) {
+function BoutonPlay({gama, setIsPlaying, isPlaying}) {
 
     const handleClick = () => {
         setIsPlaying(true);

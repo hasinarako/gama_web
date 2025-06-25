@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
 import { agents, start_renderer} from '../js/simple_syntax';
 
-function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
+function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
 
   //liste contenant les données geojson
 
@@ -50,6 +50,22 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
 
   },[]);
+
+  useEffect(() => {
+
+    if (!isPlaying && map.current.getSource('bound')){
+
+      for (let key in geojsonData){
+        removeGeoJSONLayer(key);
+      }
+
+      map.current.removeLayer('bound');
+      map.current.removeSource('bound');
+
+    };
+
+
+  },[isPlaying]);
 
 
   // composant qui ajoute toutes les espèces d'une même source de données GeoJson
@@ -122,14 +138,35 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
 
   };
 
-  function addBounds(data){
+   function removeGeoJSONLayer(species) {
 
-    if (map.current.getSource('bound')) return;
+    if (!map.current) return;
+
+      let id = "";
+   
+      let liste = JSON.parse(geojsonData[species]);
+      let liste2 = liste.features;
+
+      for (const source of liste2){
+        
+        id = species+source["id"];
+
+        if (map.current.getSource(id)) {
+
+          map.current.removeLayer(id);
+          map.current.removeSource(id);
+
+        }
+
+        };
+
+  };
+
+  function addBounds(){
+
+    if (map.current.getSource('bound') || !map.current || !bound['bound']) return;
 
     let color = "#000000";
-
-    SetBound(data);
-    CenterBound();
 
     map.current.addSource("bound",{
       'type': 'geojson',
@@ -147,38 +184,39 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
       }
     });
 
-
+ };
     //ajuster la position de la vue en fonction du modèle et de ses limites
-    function CenterBound(){
+  function CenterBound(){
 
-      if (!bound) return ;
-      
-      let liste = bound['bound']['geometry']['coordinates'];
-      let x,y,z;
-      x=y=z=0;
-      
-      for (let i=0; i<liste.length;i++){
-  
-        x += liste[i][0][0];
-        y += liste[i][0][1];
-        z += liste[i][0][2];
-      };
-      x = x/liste.length;
-      y = y/liste.length;
-      z = z/liste.length;
+    if (!bound || !map.current.getSource('bound')) return ;
+    
+    let liste = bound['bound']['geometry']['coordinates'];
+    let x,y,z;
+    x=y=z=0;
+    
+    for (let i=0; i<liste.length;i++){
 
-
-      map.current.flyTo({
-            center: [
-                x,
-                y
-            ],
-            essential: true 
-        });
-
+      x += liste[i][0][0];
+      y += liste[i][0][1];
+      z += liste[i][0][2];
     };
+    x = x/liste.length;
+    y = y/liste.length;
+    z = z/liste.length;
+
+
+    map.current.flyTo({
+          center: [
+              x,
+              y
+          ],
+          essential: true ,
+          zoom:15
+      });
 
   };
+
+ 
 
 
   function handleClick(){
@@ -189,6 +227,7 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     [bounds,result] = agents(gama);
 
     setGeojsonData(result); 
+    SetBound(bounds);
 
     
 
@@ -198,7 +237,8 @@ function Map({gama,geojsonData,setGeojsonData, isLoaded}) {
     
     //adding bounds and adjusting zoom
 
-    addBounds(bounds);
+    addBounds();
+    CenterBound();
     
 
   };

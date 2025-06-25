@@ -45,6 +45,15 @@ export function play(experiment){
 
 }
 
+export function play2(experiment){
+	if (experiment==null) return;
+		for(let i=0; i < 10; i++ ){
+			experiment.step(onReceiveMsg);
+		};
+
+
+};
+
 export function step(experiment){
 	if(experiment==null) return;
 	experiment.step(onReceiveMsg);
@@ -100,8 +109,6 @@ export function agents(experiment){
 		//result for road_traffic-> {'building', 'road', 'people'}
 
 		for (const species of final){
-			
-			console.log(species);
 
 			experiment.evalExpr("to_geojson(" + species + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 
@@ -116,12 +123,14 @@ export function agents(experiment){
 				dico[species]=geojson;    //en clé on a l'id et en valeur on a les données geojson
 				//log(geojson);
 			}
-			}, true);
+		}, true);
 			
 		};
 		
 	});
 
+	
+	
 	return [bounds,dico];
 	
 };
