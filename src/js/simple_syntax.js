@@ -87,17 +87,23 @@ export function agents(experiment){
 	let temp;
 	let sep;
 
+
+
+	//asking the limits of the model to the server and stocking it into the dico bounds
 	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
 		var parsed = JSON.parse(message);
+		console.log(parsed);
+		if (parsed['type']=='UnableToExectuteRequest') return;
 		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
 	})
 
+	// asking for a list of all the agents of the model
 	experiment.evalExpr("world.agents", function(message){
 
 		var parsed = JSON.parse(message)["content"];
 		var parsed2 = JSON.parse(parsed)["gama_contents"];
 
-
+		// key_example = { "agent_reference" : "name_of_tutorial.people[0]" } slicing value to only keep "people"
 		for (let key of parsed2){
 			sep = key["agent_reference"].indexOf(".");
 			temp = key["agent_reference"].slice(sep+1);
@@ -105,8 +111,10 @@ export function agents(experiment){
 			liste.push(temp.slice(0,sep));
 		};
 
-		final = new Set(liste);
+		final = new Set(liste); //removing all repetitions
 		//result for road_traffic-> {'building', 'road', 'people'}
+
+
 
 		for (const species of final){
 

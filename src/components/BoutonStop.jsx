@@ -1,9 +1,10 @@
 import {stop } from "../js/simple_syntax.js";
 
-function BoutonStop({gama, setIsPlaying}) {
+function BoutonStop({gama, setIsPlaying, setIsStopped}) {
 
     const handleClick = () => {
             setIsPlaying(false);
+            setIsStopped(true);
             stop(gama);
         }
 

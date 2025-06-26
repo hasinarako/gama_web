@@ -2,9 +2,9 @@ import React, { useRef, useEffect, useState} from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
-import {agents} from '../js/simple_syntax';
+import {agents, step} from '../js/simple_syntax';
 
-function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
+function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
 
   //liste contenant les données geojson
 
@@ -27,33 +27,35 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
     if (map.current) return;  //évite de regénérer la carte 
 
     // avec fond de carte
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-      center: [lng,lat],
-      zoom: zoom
-    },[API_KEY, lng, lat]);
-
-    //sans fond de carte
     // map.current = new maplibregl.Map({
     //   container: mapContainer.current,
-    //   style: { 
-    //     version: 8,
-    //     sources: {}, 
-    //     layers: [],
-    //     glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${API_KEY}`,
-    //   sprite: `https://api.maptiler.com/maps/streets-v2/sprite?key=${API_KEY}`
-    //   },
+    //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
     //   center: [lng,lat],
     //   zoom: zoom
-    //   });
+    // },[API_KEY, lng, lat]);
+
+    //sans fond de carte
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: { 
+        version: 8,
+        sources: {}, 
+        layers: [],
+        glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${API_KEY}`,
+
+      },
+      center: [lng,lat],
+      zoom: 10
+      });
 
 
   },[]);
 
   useEffect(() => {
 
-    if (!isPlaying && map.current.getSource('bound')){
+    if (!isStopped) return;
+
+    if ( map.current.getSource('bound') ){
 
       for (let key in geojsonData){
         removeGeoJSONLayer(key);
@@ -64,8 +66,22 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
 
     };
 
+    
 
-  },[isPlaying]);
+  },[isStopped]);
+
+
+  // useEffect(() => {
+
+  //   if (isPaused || !isPlaying) return;
+
+  //   for (let i=0; i<10; i++){
+  //     step(gama);
+  //   };
+  //   handleClick();
+
+
+  // },[isPlaying,isPaused]);
 
 
   // composant qui ajoute toutes les espèces d'une même source de données GeoJson
@@ -230,16 +246,13 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
     SetBound(bounds);
 
     
-
+    //adding all species of the model
     for (let key in geojsonData){
       addGeoJSONLayer(key);
     }
     
     //adding bounds and adjusting zoom
-
-    addBounds();
-    CenterBound();
-    
+    addBounds();    
 
   };
 
@@ -248,6 +261,7 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying}) {
 
     <div className="map-wrap">
       <button onClick={handleClick} >Load Map</button>
+      <button onClick={CenterBound} >Centrer</button>
       <div ref={mapContainer}  className="map" />
     </div>
   );

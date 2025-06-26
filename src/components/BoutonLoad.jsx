@@ -1,10 +1,10 @@
 import {load } from "../js/simple_syntax.js";
 
-function BoutonLoad({gama, setIsLoaded}) {
+function BoutonLoad({gama}) {
 
     const handleClick = () => {
             load(gama);
-            setIsLoaded(true);
+     
         }
 
 
