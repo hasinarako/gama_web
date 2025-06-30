@@ -1,8 +1,12 @@
 
 export default class GAMA {
-    host = "";
-    modelPath = 'C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7.gaml';
-    experimentName = 'road_traffic';
+    // host = "";
+    // modelPath = 'C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7.gaml';
+    // experimentName = 'road_traffic';
+
+    modelPath;
+    experimentName;
+    host;
 
 
     socket_id = 0;

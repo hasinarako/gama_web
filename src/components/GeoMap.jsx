@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './../style/Map.css';
 import {agents, step} from '../js/simple_syntax';
 
-function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
+function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped, Options}) {
 
   //liste contenant les données geojson
 
@@ -18,39 +18,49 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
   const lat = 0;
 
   const zoom = 20;
-  const API_KEY = 'OCcRQG5w0Xh9FaCxRMMn';
+  const API_KEY = Options['API_KEY'];
+  const map_style = Options['map-style'] // 'blanc' ou 'world'
 
   
 
   useEffect(() => {  
 
-    if (map.current) return;  //évite de regénérer la carte 
+    // if (map.current) return;  //évite de regénérer la carte 
+    if (map.current) {
+        map.current.remove();
+        map.current = null;
+    }
 
-    // avec fond de carte
-    // map.current = new maplibregl.Map({
-    //   container: mapContainer.current,
-    //   style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
-    //   center: [lng,lat],
-    //   zoom: zoom
-    // },[API_KEY, lng, lat]);
+    if (map_style==="world"){
+      // avec fond de carte
+      map.current = new maplibregl.Map({
+        container: mapContainer.current,
+        style: `https://api.maptiler.com/maps/streets-v2/style.json?key=${API_KEY}`,
+        center: [lng,lat],
+        zoom: zoom
+      },[API_KEY, lng, lat]);
 
-    //sans fond de carte
-    map.current = new maplibregl.Map({
-      container: mapContainer.current,
-      style: { 
-        version: 8,
-        sources: {}, 
-        layers: [],
-        glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${API_KEY}`,
+    }else if (map_style==='blanc'){
+      //sans fond de carte
+      map.current = new maplibregl.Map({
+        container: mapContainer.current,
+        style: { 
+          version: 8,
+          sources: {}, 
+          layers: [],
+          glyphs: `https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=${API_KEY}`,
 
-      },
-      center: [lng,lat],
-      zoom: 10
-      });
+        },
+        center: [lng,lat],
+        zoom: 10
+        });
+    };
+    
+
+  },[API_KEY, map_style]);
 
 
-  },[]);
-
+//retirer la simulation après un stop
   useEffect(() => {
 
     if (!isStopped) return;
@@ -66,9 +76,9 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
 
     };
 
-    
-
   },[isStopped]);
+
+
 
 
   // useEffect(() => {
@@ -80,12 +90,12 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
   //   };
   //   handleClick();
 
-
   // },[isPlaying,isPaused]);
 
 
-  // composant qui ajoute toutes les espèces d'une même source de données GeoJson
 
+
+  // composant qui ajoute toutes les espèces d'une même source de données GeoJson
   function addGeoJSONLayer(species) {
 
     if (!map.current) return;
@@ -107,19 +117,19 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
         color = source["properties"]["color"];
         
 
-        if (typeLayer=="LineString"){
+        if (typeLayer==="LineString"){
           typeLayer = "line";
           paintConfig = {
             'line-color' : color,
             'line-opacity' : 0.8
           };
-        }else if (typeLayer=="Polygon"){
+        }else if (typeLayer==="Polygon"){
           typeLayer = "fill";
           paintConfig = {
             'fill-color' : color,
             'fill-opacity' : 0.8
           };
-        }else if (typeLayer="Point"){
+        }else if (typeLayer==="Point"){
           typeLayer = "circle";
           paintConfig = {
             'circle-color' : color,
@@ -154,12 +164,12 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
 
   };
 
-   function removeGeoJSONLayer(species) {
+  //fonction qui enlève une expèce donnée sur la carte
+  function removeGeoJSONLayer(species) {
 
     if (!map.current) return;
 
       let id = "";
-   
       let liste = JSON.parse(geojsonData[species]);
       let liste2 = liste.features;
 
@@ -178,7 +188,7 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped}) {
 
   };
 
-  function addBounds(){
+  function addBounds(){ //fonction qui ajoute les limites de la simulation
 
     if (map.current.getSource('bound') || !map.current || !bound['bound']) return;
 

@@ -16,11 +16,12 @@ function App() {
   //gama sera le paramètre qui contiendra l'objet gama
   const [gama, setGama] = useState(null);
 
-  //booléen qui dit si la simulation tourne
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
-  const [BlankMap, setIsBlank] = useState(true);
+  const [Options, setOptions] = useState( { 'API_KEY' : 'OCcRQG5w0Xh9FaCxRMMn', 'map-style': 'world', 'step':20 })
+  const [Parameters, setParameters] = useState({});
+
 
   //dictionnaire des données geojson de tous les agents
   const [geojsonData, setGeojsonData] = useState({});
@@ -30,14 +31,15 @@ function App() {
     
     <div>
       <BoutonConnect setGama={setGama} gama={gama}/>
-      <BoutonLoad gama={gama} />
+      <BoutonLoad gama={gama} setIsStopped={setIsStopped}/>
       <BoutonPlay gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/>
       <BoutonPause gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/><BoutonStep gama={gama}/>
       <BoutonEval gama={gama} setGeojsonData={setGeojsonData} geojsonData={geojsonData} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying} setIsStopped={setIsStopped}/>
       <BoutonReload gama={gama}/>
-      <Option/>
-      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped}/>
+      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped} Options={Options}/>
+      <Option setOptions={setOptions} Options={Options}/>
+      
     </div>
 
   );

@@ -12,8 +12,10 @@ export function connect(experiment){
 	
 	const host= "localhost";
 	const port= 1000;
-	const modelPath='C:/Users/rhmha/Downloads/stage/GAMA/headless/samples/roadTraffic/models/model7.gaml';
-	const experimentName = 'road_traffic';
+	// const modelPath= 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Road Traffic/models/Model 07.gaml'; //c'est mieux ça
+	const modelPath = 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Luneray flu/models/model6.gaml';
+	// const experimentName = 'road_traffic';
+	const experimentName = 'main';
 
 	experiment = new GAMA("ws://"+host+":"+port+"/", modelPath, experimentName);
 	experiment.logger = log;
@@ -29,10 +31,10 @@ export function load(experiment){
 	//experiment.modelPath='C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7';
 	//experiment.experimentName='road_traffic';
 
-	experiment.setParameters([
-		{ "name": "Number of people agents", "value": 111, "type": "int" },
-		{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
-	]);
+	// experiment.setParameters([
+	// 	{ "name": "Number of people agents", "value": 111, "type": "int" },
+	// 	{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
+	// ]);
 	experiment.setEndCondition("cycle>=15");
     experiment.launch(onReceiveMsg);
 
@@ -93,7 +95,7 @@ export function agents(experiment){
 	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
 		var parsed = JSON.parse(message);
 		console.log(parsed);
-		if (parsed['type']=='UnableToExectuteRequest') return;
+		// if (parsed['type']=='UnableToExecuteRequest') return;
 		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
 	})
 

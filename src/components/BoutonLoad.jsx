@@ -1,8 +1,9 @@
 import {load } from "../js/simple_syntax.js";
 
-function BoutonLoad({gama}) {
+function BoutonLoad({gama, setIsStopped}) {
 
     const handleClick = () => {
+            setIsStopped(false);
             load(gama);
      
         }
