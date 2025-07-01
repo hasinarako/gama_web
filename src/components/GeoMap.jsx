@@ -111,10 +111,14 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped, Options}) {
       // console.log(liste2);
 
       for (const source of liste2){
+
+        console.log(source);
         
         typeLayer = source["geometry"]["type"];
         id = species+source["id"];
-        color = source["properties"]["color"];
+
+        if (source["properties"]["color"]){color = source["properties"]["color"];}else{color ="#000000"};
+        
         
 
         if (typeLayer==="LineString"){

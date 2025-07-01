@@ -13,7 +13,7 @@ export function connect(experiment){
 	const host= "localhost";
 	const port= 1000;
 	// const modelPath= 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Road Traffic/models/Model 07.gaml'; //c'est mieux ça
-	const modelPath = 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Luneray flu/models/model6.gaml';
+	const modelPath = 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Luneray flu/models/model4.gaml';
 	// const experimentName = 'road_traffic';
 	const experimentName = 'main';
 
@@ -94,7 +94,6 @@ export function agents(experiment){
 	//asking the limits of the model to the server and stocking it into the dico bounds
 	experiment.evalExpr("to_geojson("+"world.shape"+",\"EPSG:4326\",[\"" + "color" + "\"])", function(message){
 		var parsed = JSON.parse(message);
-		console.log(parsed);
 		// if (parsed['type']=='UnableToExecuteRequest') return;
 		bounds["bound"]=JSON.parse(JSON.parse(parsed["content"]))["features"][0];
 	})
@@ -119,7 +118,7 @@ export function agents(experiment){
 
 
 		for (const species of final){
-
+			// log(species);
 			experiment.evalExpr("to_geojson(" + species + ",\"EPSG:4326\",[\"" + "color" + "\"])", function (message) {
 
 			if (typeof message == "object") {
@@ -131,7 +130,7 @@ export function agents(experiment){
 				const geojson = JSON.parse(geojsonString);
 				
 				dico[species]=geojson;    //en clé on a l'id et en valeur on a les données geojson
-				//log(geojson);
+				// log(geojson);
 			}
 		}, true);
 			
