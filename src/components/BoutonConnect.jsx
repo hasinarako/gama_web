@@ -1,5 +1,7 @@
 import {connect } from "../js/simple_syntax.js";
 
+
+//ajout modelpath, host, port et experiment name
 function BoutonConnect({setGama, gama}) {
 
     const handleClick = () => {

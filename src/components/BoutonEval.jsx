@@ -1,13 +1,11 @@
-import {agents} from "../js/simple_syntax.js";
+import { evaluation } from "../js/simple_syntax";
+
 function BoutonEval({ gama }) {
 
 
   const handleClick = () => {
-
-    agents(gama);
+    evaluation(gama);
     
-
-
   };
 
 

@@ -112,7 +112,7 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped, Options}) {
 
       for (const source of liste2){
 
-        console.log(source);
+        // console.log(source);
         
         typeLayer = source["geometry"]["type"];
         id = species+source["id"];

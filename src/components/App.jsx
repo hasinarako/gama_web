@@ -34,7 +34,7 @@ function App() {
       <BoutonLoad gama={gama} setIsStopped={setIsStopped}/>
       <BoutonPlay gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/>
       <BoutonPause gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/><BoutonStep gama={gama}/>
-      <BoutonEval gama={gama} setGeojsonData={setGeojsonData} geojsonData={geojsonData} />
+      <BoutonEval gama={gama} />
       <BoutonStop gama={gama} setIsPlaying={setIsPlaying} setIsStopped={setIsStopped}/>
       <BoutonReload gama={gama}/>
       <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped} Options={Options}/>

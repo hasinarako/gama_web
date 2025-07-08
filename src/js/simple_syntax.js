@@ -12,10 +12,10 @@ export function connect(experiment){
 	
 	const host= "localhost";
 	const port= 1000;
-	// const modelPath= 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Road Traffic/models/Model 07.gaml'; //c'est mieux ça
-	const modelPath = 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Luneray flu/models/model4.gaml';
-	// const experimentName = 'road_traffic';
-	const experimentName = 'main';
+	const modelPath= 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Road Traffic/models/Model 07.gaml'; //c'est mieux ça
+	// const modelPath = 'C:/Users/rhmha/AppData/Local/Programs/Gama/configuration/org.eclipse.osgi/263/0/.cp/models/Tutorials/Luneray flu/models/model4.gaml';
+	const experimentName = 'road_traffic';
+	// const experimentName = 'main';
 
 	experiment = new GAMA("ws://"+host+":"+port+"/", modelPath, experimentName);
 	experiment.logger = log;
@@ -31,10 +31,10 @@ export function load(experiment){
 	//experiment.modelPath='C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7';
 	//experiment.experimentName='road_traffic';
 
-	// experiment.setParameters([
-	// 	{ "name": "Number of people agents", "value": 111, "type": "int" },
-	// 	{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
-	// ]);
+	experiment.setParameters([
+		{ "name": "Number of people agents", "value": 111, "type": "int" },
+		{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
+	]);
 	experiment.setEndCondition("cycle>=15");
     experiment.launch(onReceiveMsg);
 
@@ -47,14 +47,12 @@ export function play(experiment){
 
 }
 
-export function play2(experiment){
-	if (experiment==null) return;
-		for(let i=0; i < 10; i++ ){
-			experiment.step(onReceiveMsg);
-		};
-
-
-};
+// export function play2(experiment){
+// 	if (experiment==null) return;
+// 		for(let i=0; i < 10; i++ ){
+// 			experiment.step(onReceiveMsg);
+// 		};
+// };
 
 export function step(experiment){
 	if(experiment==null) return;
@@ -71,7 +69,16 @@ export function pause(experiment){
 export function evaluation(experiment){
 	if(experiment==null) return;
 
-	agents(experiment);
+	experiment.describe(function(message){
+
+		var liste = JSON.parse(message)["command"]["parameters"];
+
+		for (let parameters in liste){
+			log(console.log(liste[parameters]));
+		}
+	}
+	);
+
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
@@ -137,8 +144,6 @@ export function agents(experiment){
 		};
 		
 	});
-
-	
 	
 	return [bounds,dico];
 	

@@ -242,7 +242,7 @@ export default class GAMA {
     stop(c){
 
         this.state = "stop";
-        this.execute(this.state, c)
+        this.execute(this.state, c);
      
     }
 
@@ -253,6 +253,11 @@ export default class GAMA {
         this.state = "reload";
         this.execute(this.state, c);
         // if (c) c();
+    }
+
+    describe(c){
+        this.state = "describe";
+        this.execute(this.state, c);
     }
 
 } 
