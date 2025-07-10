@@ -272,12 +272,12 @@ function Map({gama,geojsonData,setGeojsonData, isPlaying, isStopped, Options}) {
 
 
   return (
-
-    <div className="map-wrap">
+    <div className='map-wrap'>
       <button onClick={handleClick} >Load Map</button>
       <button onClick={CenterBound} >Centrer</button>
       <div ref={mapContainer}  className="map" />
     </div>
+    
   );
 
   };

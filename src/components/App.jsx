@@ -9,6 +9,7 @@ import BoutonEval  from "./BoutonEval";
 import BoutonPause from "./BoutonPause";
 import BoutonStop from "./BoutonStop";
 import Map from "./GeoMap";
+import Parameters  from "./Parameters";
 
 
 function App() {
@@ -20,7 +21,8 @@ function App() {
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
   const [Options, setOptions] = useState( { 'API_KEY' : 'OCcRQG5w0Xh9FaCxRMMn', 'map-style': 'world', 'step':20 })
-  const [Parameters, setParameters] = useState({});
+  const [settings, setSettings] = useState({});
+
 
 
   //dictionnaire des données geojson de tous les agents
@@ -30,15 +32,40 @@ function App() {
   return (
     
     <div>
-      <BoutonConnect setGama={setGama} gama={gama}/>
-      <BoutonLoad gama={gama} setIsStopped={setIsStopped}/>
-      <BoutonPlay gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/>
-      <BoutonPause gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused}/><BoutonStep gama={gama}/>
-      <BoutonEval gama={gama} />
-      <BoutonStop gama={gama} setIsPlaying={setIsPlaying} setIsStopped={setIsStopped}/>
-      <BoutonReload gama={gama}/>
-      <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped} Options={Options}/>
-      <Option setOptions={setOptions} Options={Options}/>
+      
+     
+    {/* Groupe de boutons connect/load aligné à gauche */}
+    <div style={{ display: "flex", justifyContent: "space-between", margin: "40px"}}>
+      
+      {/* Boutons à gauche */}
+      <div>
+        <BoutonConnect setGama={setGama} gama={gama} />
+        <BoutonLoad gama={gama} setIsStopped={setIsStopped} />
+      </div>
+
+      {/* Boutons à droite */}
+      <div>
+        <BoutonPlay gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused} />
+        <BoutonPause gama={gama} setIsPlaying={setIsPlaying} setIsPaused={setIsPaused} />
+        <BoutonStep gama={gama} />
+        <BoutonEval gama={gama} />
+        <BoutonStop gama={gama} setIsPlaying={setIsPlaying} setIsStopped={setIsStopped} />
+        <BoutonReload gama={gama} />
+      </div>
+
+      </div>
+
+      <div style={{ display: "flex", margin:"30px"}}>
+
+
+        <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped} Options={Options}/>
+        <Parameters gama={gama} settings={settings} setSettings={setSettings} isStopped={isStopped}/>
+        <Option setOptions={setOptions} Options={Options}/>
+
+      </div>
+      
+      
+      
       
     </div>
 

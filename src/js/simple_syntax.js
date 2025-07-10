@@ -1,10 +1,5 @@
 import GAMA from "./../dev/GAMA";
 
-// var ABSOLUTE_PATH_TO_GAMA = 'C:\\git\\';
-// var modelPath = ABSOLUTE_PATH_TO_GAMA + 'gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml'; 
-// var modelPath =  '/var/www/github/gama/msi.gama.models/models/Tutorials/Road Traffic/models/Model 05.gaml';
-
-// const experiment = new GAMA("ws://51.255.46.42:6001/", modelPath, experimentName);
 var experiment=null;
 
 
@@ -27,14 +22,13 @@ export function connect(experiment){
 export function load(experiment){
 
 	if(experiment==null) return;
-	// console.log(document.getElementById("model").value);
-	//experiment.modelPath='C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7';
-	//experiment.experimentName='road_traffic';
 
 	experiment.setParameters([
 		{ "name": "Number of people agents", "value": 111, "type": "int" },
 		{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
 	]);
+
+
 	experiment.setEndCondition("cycle>=15");
     experiment.launch(onReceiveMsg);
 
@@ -47,12 +41,6 @@ export function play(experiment){
 
 }
 
-// export function play2(experiment){
-// 	if (experiment==null) return;
-// 		for(let i=0; i < 10; i++ ){
-// 			experiment.step(onReceiveMsg);
-// 		};
-// };
 
 export function step(experiment){
 	if(experiment==null) return;
@@ -67,6 +55,9 @@ export function pause(experiment){
 
 
 export function evaluation(experiment){
+
+	let dico = {};
+
 	if(experiment==null) return;
 
 	experiment.describe(function(message){
@@ -74,11 +65,15 @@ export function evaluation(experiment){
 		var liste = JSON.parse(message)["command"]["parameters"];
 
 		for (let parameters in liste){
-			log(console.log(liste[parameters]));
+		
+			const key = liste[parameters].name;
+			const {name, ...rest} = liste[parameters];
+			dico[key] = rest;
 		}
-	}
+		}
 	);
 
+	return dico;
 	// experiment.evalExpr("create people number:100;", onReceiveMsg);
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);

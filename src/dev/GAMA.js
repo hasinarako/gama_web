@@ -1,8 +1,5 @@
 
 export default class GAMA {
-    // host = "";
-    // modelPath = 'C:/Users/rhmha/Downloads/GAMA_2025.05.4_Windows_with_JDK_10.05.25_f9040ca/headless/samples/roadTraffic/models/model7.gaml';
-    // experimentName = 'road_traffic';
 
     modelPath;
     experimentName;
@@ -81,7 +78,7 @@ export default class GAMA {
         // });
     }
     initExecutor() {
-        var myself = this;
+        // var myself = this;
         this.executor = setInterval(() => {
             // console.log("queue "+this.queue);
             if (this.queue.length > 0 && this.req === "") {
@@ -92,7 +89,7 @@ export default class GAMA {
                 this.wSocket.send(JSON.stringify(this.req)); // console.log("request " + JSON.stringify(this.req));
 
                 // Wait 4s for GAMA GUI to fully load
-                if (this.req["type"] == "load"){
+                if (this.req["type"] === "load"){
                     var endTimer = new Date().getTime();
                     var startTimer = endTimer - 4000;
                     while(endTimer < startTimer) {
@@ -245,8 +242,6 @@ export default class GAMA {
         this.execute(this.state, c);
      
     }
-
-
 
     reload(c) {
         // this.queue.length = 0;
