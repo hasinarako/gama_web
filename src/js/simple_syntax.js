@@ -95,8 +95,8 @@ export function evaluation(experiment){
 		experiment.evalExpr("people count (each.objective='working')",function(message){
 			nb = parseInt(JSON.parse(message)["content"]);
 			
-			data.push({"objective" : "working", share:(nb/total*100)});
-			data.push({"objective" : "resting", share:(total-nb)/total*100});
+			data.push({"name" : "working", 'value':(nb/total*100)});
+			data.push({"name" : "resting", 'value':(total-nb)/total*100});
 			
 
 		});

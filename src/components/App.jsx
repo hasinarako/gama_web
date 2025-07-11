@@ -10,6 +10,7 @@ import BoutonPause from "./BoutonPause";
 import BoutonStop from "./BoutonStop";
 import Map from "./GeoMap";
 import Parameters  from "./Parameters";
+import DataDisplay from "./DataDisplay";
 
 
 function App() {
@@ -59,8 +60,9 @@ function App() {
 
 
         <Map gama={gama}  geojsonData={geojsonData} setGeojsonData={setGeojsonData} isPlaying={isPlaying} isStopped={isStopped} Options={Options}/>
-        <Parameters gama={gama} settings={settings} setSettings={setSettings} isStopped={isStopped}/>
+        <div><Parameters gama={gama} settings={settings} setSettings={setSettings} isStopped={isStopped}/><DataDisplay gama={gama}/></div>
         <Option setOptions={setOptions} Options={Options}/>
+        
 
       </div>
       
