@@ -1,5 +1,5 @@
 import React, {use, useEffect} from 'react';
-import {evaluation } from "../js/simple_syntax.js";
+import {loadsettings } from "../js/simple_syntax.js";
 import './../style/Parameters.css';
 
 
@@ -7,7 +7,6 @@ import './../style/Parameters.css';
 function Parameters({gama,settings, setSettings, isStopped}){
 
     useEffect(() => {
-        console.log(isStopped);
         if (isStopped){
             setSettings({});
         };
@@ -16,24 +15,9 @@ function Parameters({gama,settings, setSettings, isStopped}){
 
 
     const handleClick = () => {
-        const dico = evaluation(gama);
+        const dico = loadsettings(gama);
         setSettings(dico);  
     }
-
-    // function log(){
-
-    //     const element = document.getElementById('parameter');
-    //     console.log(settings);
-
-    //     for (let key in settings){
-    //         element.innerHTML += key;
-    //         element.innerHTML += "       ";
-    //         element.innerHTML += JSON.parse(settings[key]['value']);
-	//         element.innerHTML +=("</br></br>");
-    //     };
-
-    // };
-
 
     
     return(

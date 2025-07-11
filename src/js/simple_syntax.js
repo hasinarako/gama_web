@@ -54,7 +54,7 @@ export function pause(experiment){
 }
 
 
-export function evaluation(experiment){
+export function loadsettings(experiment){
 
 	let dico = {};
 
@@ -78,6 +78,34 @@ export function evaluation(experiment){
 	// experiment.evalExpr("length(people)", onReceiveMsg);
 	// experiment.evalExpr("cycle", onReceiveMsg);
 }
+
+export function evaluation(experiment){
+
+	let data = [];
+	let total;
+	let nb;
+	if (experiment==null) return;
+
+	//working --> magenta, resting -->blue
+
+	experiment.evalExpr("length(people)",function(message){
+		
+		total = parseInt(JSON.parse(message)["content"]);	
+	
+		experiment.evalExpr("people count (each.objective='working')",function(message){
+			nb = parseInt(JSON.parse(message)["content"]);
+			
+			data.push({"objective" : "working", share:(nb/total*100)});
+			data.push({"objective" : "resting", share:(total-nb)/total*100});
+			
+
+		});
+
+	});
+
+	return data;
+	
+};
 
 
 export function agents(experiment){
