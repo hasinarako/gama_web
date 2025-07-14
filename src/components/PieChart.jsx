@@ -10,7 +10,7 @@ const Arc = ({ data, index, createArc, colors, format }) => (
       fill="black"
       fontSize="13"
     >
-      {format(data.value)}
+      {`${format(data.value)}% ${data.data.name}`}
     </text>
   </g>
 );
