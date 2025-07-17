@@ -32,6 +32,7 @@ Load and run simulations using custom buttons
 Adjust parameters in the UI and visualize results using charts (e.g., D3.js pie charts)
 
 Note: Before clicking the Connect button, make sure GAMA is running
+Create an account on [maptiler](https://www.maptiler.com/) to get your personal API KEY to display the world map with the librairy MapLibre.
 
 
 📚 Technologies Used
