@@ -23,7 +23,7 @@ export function load(experiment){
 
 	if(experiment==null) return;
 
-	experiment.setParameters([
+	experiment.setParameters([ //experiment.param à essayer
 		{ "name": "Number of people agents", "value": 111, "type": "int" },
 		{ "name": "Value of destruction when a people agent takes a road", "value": 0.2, "type": "float" }
 	]);
@@ -160,7 +160,7 @@ export function agents(experiment){
 				const geojson = JSON.parse(geojsonString);
 				
 				dico[species]=geojson;    //en clé on a l'id et en valeur on a les données geojson
-				// log(geojson);
+				log(geojson);
 			}
 		}, true);
 			

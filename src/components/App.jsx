@@ -21,7 +21,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isStopped, setIsStopped] = useState(false);
-  const [Options, setOptions] = useState( { 'API_KEY' : 'OCcRQG5w0Xh9FaCxRMMn', 'map-style': 'world', 'step':20 })
+  const [Options, setOptions] = useState( { 'API_KEY' : 'INSERTYOURAPIKEY', 'map-style': 'world', 'step':20 })
   const [settings, setSettings] = useState({});
 
 
