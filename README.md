@@ -1,8 +1,59 @@
+
+1. Prerequisites
+   
+Make sure you have installed:
+- Node.js
+- Yarn
+- a version of Gama Platform with JDK
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-In the project directory, you can run to start the React App:
+
+2. Install Dependencies
+
+Open the root directory of the React app and run:
+
+### `yarn install`
+
+Now you can run this to start the React App:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This will start the app at http://localhost:3000.
+
+
+
+🧩 Usage
+
+Connect to the GAMA platform via WebSocket (handled inside simple_syntax.js and GAMA.js)
+
+Load and run simulations using custom buttons
+
+Adjust parameters in the UI and visualize results using charts (e.g., D3.js pie charts)
+
+Note: Before clicking the Connect button, make sure GAMA is running
+
+
+📚 Technologies Used
+
+- React
+
+- JavaScript
+
+- D3.js (for data visualizations)
+
+- MapLibre (for cartographic data visualization)
+
+- WebSockets (to communicate with the headless server GAMA)
+
+- HTML & CSS
+
+
+📌 Project Status
+
+Originally developed during an internship at IRIT, this project is currently paused but may be updated in the future for improvements or new features.
+
+
+
+ 
+
