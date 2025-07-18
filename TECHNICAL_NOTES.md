@@ -1,32 +1,29 @@
 # ✅ TODO List
 
-Ce fichier recense les fonctionnalités à implémenter et les tâches techniques en attente dans le projet.
+This file lists the features to implement and the pending technical tasks in the project.
 
 ---
 
 ## ✨ Fonctionnalités à ajouter
 
-- [ ] Permettre de faire tourner la simulation sur le client web selon un pas donné dans la case Simulation Step
-- [ ] Permettre l'affichage et la modification des paramètres du modèle
-- [ ] Ajouter les types de graphiques adaptés au modèle chargé
+- [ ] Allow the simulation to run on the web client according to the step specified in the Simulation Step input
+- [ ] Enable the display and modification of the model's parameters and ensure the Reload button works correctly
+- [ ] Add appropriate types of charts based on the loaded model
+- [ ] Add the option to represent agents with images
 
 ---
 
-## 🧼 Améliorations du code
+## 🧼 Code Improvements
 
-- [ ] Optimiser le chargement de la carte sur le client web
-- [ ] Automatiser le chargement de la carte et des graphiques une fois que le modèle est chargé
-- [ ] Assurer une bonne projection des modèles
-
-
----
-
-## 🖌️ UI/UX à améliorer
-
-- [ ] Ajouter un indicateur de chargement pendant la connexion à GAMA et pendant l'affichage de la simulation
-- [ ] Ajouter une interface permettant de choisir le modèle à lancer
+- [ ] Optimize map loading on the web client
+- [ ] Automate the loading of the map and charts once the model is loaded
+- [ ] Ensure proper projection of models
 
 ---
 
+## 🖌️ UI/UX Improvements
 
+- [ ] Add a loading indicator during the connection to GAMA and during the loading of a chosen model
+- [ ] Add an interface to select which model to launch
 
+---
