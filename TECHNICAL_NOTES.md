@@ -15,7 +15,7 @@ This file lists the features to implement and the pending technical tasks in the
 
 ## 🧼 Code Improvements
 
-- [ ] Optimize map loading on the web client
+- [ ] Optimize map loading on the web client for example don't ask for location of motionless agents (useless rerendering)
 - [ ] Automate the loading of the map and charts once the model is loaded
 - [ ] Ensure proper projection of models
 
